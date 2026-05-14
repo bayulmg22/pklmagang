@@ -1,60 +1,75 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Pantau Absensi') }}
+        <h2 class="font-bold text-xl text-slate-800 leading-tight">
+            {{ __('Pantau Kehadiran Harian') }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl border border-gray-100">
-                <div class="p-6">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">Nama Peserta</th>
-                                    <th scope="col" class="px-6 py-3">Asal Instansi</th>
-                                    <th scope="col" class="px-6 py-3">Jam Masuk</th>
-                                    <th scope="col" class="px-6 py-3">Jam Pulang</th>
-                                    <th scope="col" class="px-6 py-3">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($attendancesGrouped as $date => $attendances)
-                                    <tr class="bg-gray-100">
-                                        <td colspan="5" class="px-6 py-2 font-bold text-gray-700">Tanggal: {{ $date }}</td>
-                                    </tr>
-                                    @foreach($attendances as $attendance)
-                                    <tr class="bg-white border-b hover:bg-gray-50">
-                                        <td class="px-6 py-4 font-medium text-gray-900">{{ $attendance->user?->name ?? 'User Dihapus' }}</td>
-                                        <td class="px-6 py-4">{{ $attendance->user?->school ?? '-' }}</td>
-                                        <td class="px-6 py-4">{{ $attendance->check_in_time ?? '-' }}</td>
-                                        <td class="px-6 py-4">{{ $attendance->check_out_time ?? '-' }}</td>
-                                        <td class="px-6 py-4">
-                                            @if($attendance->status == 'hadir')
-                                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded border border-green-300">Hadir</span>
-                                            @elseif($attendance->status == 'telat')
-                                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded border border-yellow-300">Telat</span>
-                                            @elseif($attendance->status == 'izin')
-                                                <span class="bg-orange-100 text-orange-800 text-xs font-medium px-2.5 py-0.5 rounded border border-orange-300">Izin</span>
-                                            @elseif($attendance->status == 'sakit')
-                                                <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded border border-red-300">Sakit</span>
-                                            @else
-                                                <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded border border-gray-300">{{ ucfirst($attendance->status) }}</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">Belum ada data absensi.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+    <div class="space-y-6">
+        <div class="content-card overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+                <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider">Rekapitulasi Absensi</h3>
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Update Realtime</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left">
+                    <thead class="text-[11px] text-slate-500 uppercase tracking-widest bg-slate-50 border-b border-slate-100">
+                        <tr>
+                            <th class="px-6 py-4 font-bold">Nama Peserta</th>
+                            <th class="px-6 py-4 font-bold">Asal Instansi</th>
+                            <th class="px-6 py-4 font-bold">Masuk</th>
+                            <th class="px-6 py-4 font-bold">Pulang</th>
+                            <th class="px-6 py-4 font-bold">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @forelse ($attendancesGrouped as $date => $attendances)
+                            <tr class="bg-slate-50/50">
+                                <td colspan="5" class="px-6 py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                    🗓️ {{ \Carbon\Carbon::parse($date)->translatedFormat('d F Y') }}
+                                </td>
+                            </tr>
+                            @foreach($attendances as $attendance)
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div class="font-bold text-slate-800">{{ $attendance->user?->name ?? 'N/A' }}</div>
+                                </td>
+                                <td class="px-6 py-4 text-slate-500 font-medium text-xs">
+                                    {{ $attendance->user?->school ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4 text-slate-600 font-bold text-xs">
+                                    {{ $attendance->check_in_time ?? '—' }}
+                                </td>
+                                <td class="px-6 py-4 text-slate-600 font-bold text-xs">
+                                    {{ $attendance->check_out_time ?? '—' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    @php
+                                        $statusClass = match($attendance->status) {
+                                            'hadir' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                                            'telat' => 'bg-amber-50 text-amber-700 border-amber-200',
+                                            'izin' => 'bg-blue-50 text-blue-700 border-blue-200',
+                                            'sakit' => 'bg-rose-50 text-rose-700 border-rose-200',
+                                            default => 'bg-slate-100 text-slate-700 border-slate-200'
+                                        };
+                                    @endphp
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black border {{ $statusClass }} uppercase tracking-tighter">
+                                        {{ $attendance->status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-12 text-center text-slate-400">
+                                    <p class="text-3xl mb-2">📋</p>
+                                    <p class="text-sm font-medium">Belum ada data absensi untuk periode ini.</p>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

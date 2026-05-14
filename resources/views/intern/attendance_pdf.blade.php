@@ -4,43 +4,93 @@
     <meta charset="UTF-8">
     <title>Laporan Absensi - {{ $user->name }}</title>
     <style>
-        body { font-family: 'Helvetica', sans-serif; margin: 40px; color: #333; }
-        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 20px; }
-        .header h1 { margin: 0; font-size: 20px; text-transform: uppercase; }
-        .table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .table th, .table td { border: 1px solid #000; padding: 8px; text-align: center; }
-        .table th { background-color: #f3f4f6; }
+        @page { margin: 30px; }
+        body { font-family: 'Helvetica', 'Arial', sans-serif; margin: 0; padding: 20px; color: #1e293b; }
+        .header { border-bottom: 2px solid #334155; padding-bottom: 20px; margin-bottom: 30px; }
+        .header table { width: 100%; }
+        .logo { height: 60px; width: auto; }
+        .header-text { text-align: right; }
+        .header-text h1 { margin: 0; font-size: 20px; color: #0f172a; text-transform: uppercase; }
+        .header-text p { margin: 2px 0; font-size: 11px; color: #64748b; font-weight: bold; }
+        
+        .info-section { margin-bottom: 25px; font-size: 13px; }
+        .info-section table { width: 100%; }
+        .info-label { font-weight: bold; color: #64748b; width: 120px; text-transform: uppercase; font-size: 10px; }
+        .info-value { font-weight: bold; color: #0f172a; }
+
+        .table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .table th { background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 12px 8px; text-align: center; font-size: 11px; font-bold; text-transform: uppercase; color: #475569; }
+        .table td { border: 1px solid #e2e8f0; padding: 10px 8px; text-align: center; font-size: 12px; color: #334155; }
+        .status-badge { font-weight: bold; font-size: 10px; text-transform: uppercase; }
+        
+        .footer { position: fixed; bottom: 0; width: 100%; text-align: center; font-size: 10px; color: #94a3b8; padding: 20px 0; border-top: 1px solid #f1f5f9; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>LAPORAN ABSENSI MAGANG</h1>
-        <p>DINAS SOSIAL KABUPATEN LAMONGAN</p>
+        <table>
+            <tr>
+                <td style="width: 70px;">
+                    <img src="{{ public_path('logo-dinsos.jpg') }}" class="logo">
+                </td>
+                <td>
+                    <div style="margin-left: 15px;">
+                        <h1 style="font-size: 18px; color: #1e3a8a;">DINAS SOSIAL</h1>
+                        <p style="margin: 0; font-size: 12px; color: #64748b; text-transform: uppercase; font-weight: bold; letter-spacing: 1px;">Kabupaten Lamongan</p>
+                    </div>
+                </td>
+                <td class="header-text">
+                    <h1>REKAPITULASI ABSENSI</h1>
+                    <p>Periode: {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</p>
+                </td>
+            </tr>
+        </table>
     </div>
     
-    <p><strong>Nama:</strong> {{ $user->name }} &nbsp;&nbsp;&nbsp; <strong>NIM:</strong> {{ $user->nim }}</p>
+    <div class="info-section">
+        <table>
+            <tr>
+                <td class="info-label">Nama Lengkap</td>
+                <td class="info-value">: {{ $user->name }}</td>
+                <td class="info-label" style="text-align: right;">NIM / NISN</td>
+                <td class="info-value" style="width: 150px;">: {{ $user->nim }}</td>
+            </tr>
+            <tr>
+                <td class="info-label">Asal Instansi</td>
+                <td class="info-value">: {{ $user->school }}</td>
+                <td class="info-label" style="text-align: right;">Total Kehadiran</td>
+                <td class="info-value">: {{ count($attendances) }} Hari</td>
+            </tr>
+        </table>
+    </div>
 
     <table class="table">
         <thead>
             <tr>
-                <th>No</th>
-                <th>Tanggal</th>
-                <th>Jam Masuk</th>
-                <th>Jam Pulang</th>
-                <th>Status</th>
+                <th style="width: 40px;">No</th>
+                <th>Hari / Tanggal</th>
+                <th>Masuk</th>
+                <th>Pulang</th>
+                <th>Status Kehadiran</th>
             </tr>
         </thead>
         <tbody>
             @foreach($attendances as $index => $att)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td>{{ \Carbon\Carbon::parse($att->date)->translatedFormat('d M Y') }}</td>
-                <td>{{ $att->check_in_time ?? '-' }}</td>
-                <td>{{ $att->check_out_time ?? '-' }}</td>
-                <td>{{ ucfirst($att->status) }}</td>
+                <td style="text-align: left; padding-left: 15px;">{{ \Carbon\Carbon::parse($att->date)->translatedFormat('l, d M Y') }}</td>
+                <td style="font-weight: bold;">{{ $att->check_in_time ?? '—' }}</td>
+                <td style="font-weight: bold;">{{ $att->check_out_time ?? '—' }}</td>
+                <td>
+                    <span class="status-badge">{{ $att->status }}</span>
+                </td>
             </tr>
             @endforeach
         </tbody>
     </table>
+
+    <div class="footer">
+        SIMASOS (Sistem Informasi Manajemen Magang) &bull; Dinas Sosial Kabupaten Lamongan
+    </div>
 </body>
 </html>
