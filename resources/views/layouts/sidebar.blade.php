@@ -91,7 +91,7 @@
                 <p class="text-[10px] text-slate-500 truncate">{{ ucfirst(auth()->user()->role) }}</p>
             </div>
         </div>
-        <form method="POST" action="{{ logout }}">
+        <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-red-400 hover:bg-red-400/10 rounded-lg transition-colors">
                 🚪 Log Out
