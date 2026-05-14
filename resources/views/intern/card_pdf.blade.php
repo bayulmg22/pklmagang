@@ -3,154 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        @page { margin: 0px; size: 85mm 135mm; }
+        @page { margin: 0; size: 240pt 380pt; }
         body {
-            font-family: 'Helvetica', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f8fafc;
+            font-family: 'Helvetica', sans-serif;
+            background-color: #ffffff;
         }
-        .card {
-            width: 85mm;
-            height: 135mm;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+        .card-wrapper {
+            width: 240pt;
+            height: 380pt;
+            border: 1px solid #000;
             position: relative;
             overflow: hidden;
+            background: #fff;
         }
-        .header {
-            background-color: #1e293b;
+        .blue-header {
+            background-color: #1e3a8a;
             color: #ffffff;
             text-align: center;
-            padding: 15px 10px;
-            border-bottom: 4px solid #2563eb;
+            padding: 15pt 0;
+        }
+        .logo-box {
+            background: #fff;
+            padding: 2pt;
+            display: inline-block;
+            border-radius: 3pt;
+            margin-bottom: 5pt;
         }
         .logo-img {
-            width: 40px;
-            height: auto;
-            margin-bottom: 5px;
-            background: #ffffff;
-            padding: 2px;
-            border-radius: 4px;
+            height: 30pt;
+            width: auto;
         }
-        .header-title {
+        .title-top {
             font-size: 14pt;
             font-weight: bold;
             margin: 0;
-            letter-spacing: 1px;
         }
-        .header-sub {
+        .title-bottom {
             font-size: 8pt;
             font-weight: bold;
-            color: #94a3b8;
-            margin: 2px 0 0;
-            letter-spacing: 2px;
+            color: #93c5fd;
+            letter-spacing: 1pt;
         }
-        .photo-container {
+        .photo-section {
             text-align: center;
-            margin-top: 25px;
+            margin-top: 20pt;
         }
-        .photo-box {
-            width: 35mm;
-            height: 45mm;
-            border: 3px solid #ffffff;
-            display: inline-block;
-            background: #f1f5f9;
+        .photo-img {
+            width: 100pt;
+            height: 130pt;
+            border: 3pt solid #eee;
+            background-color: #f3f4f6;
         }
-        .info-container {
+        .info-section {
             text-align: center;
-            margin-top: 20px;
-            padding: 0 20px;
+            margin-top: 15pt;
+            padding: 0 10pt;
         }
-        .name {
-            font-size: 14pt;
+        .name-txt {
+            font-size: 15pt;
             font-weight: bold;
-            color: #0f172a;
+            color: #111;
             text-transform: uppercase;
-            margin: 0;
         }
-        .nim {
+        .nim-txt {
             font-size: 11pt;
-            color: #2563eb;
+            color: #1d4ed8;
             font-weight: bold;
-            margin: 5px 0;
+            margin-top: 2pt;
         }
-        .divider {
-            width: 40px;
-            height: 3px;
-            background: #2563eb;
-            margin: 10px auto;
-        }
-        .school {
+        .school-txt {
             font-size: 9pt;
-            color: #64748b;
+            color: #444;
             font-weight: bold;
+            margin-top: 8pt;
             text-transform: uppercase;
         }
-        .role-badge {
-            font-size: 7pt;
-            color: #94a3b8;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-top: 5px;
-            letter-spacing: 1px;
-        }
-        .qr-container {
+        .qr-section {
             position: absolute;
-            bottom: 30px;
+            bottom: 25pt;
             width: 100%;
             text-align: center;
         }
         .qr-img {
-            width: 60px;
-            height: 60px;
+            width: 60pt;
+            height: 60pt;
         }
-        .qr-text {
-            font-size: 6pt;
-            color: #cbd5e1;
-            font-weight: bold;
-            margin-top: 5px;
-            letter-spacing: 2px;
-        }
-        .footer-bar {
+        .footer-strip {
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 15px;
-            background: #0f172a;
+            height: 12pt;
+            background: #111;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="header">
-            <img src="{{ public_path('logo-dinsos.jpg') }}" class="logo-img">
-            <div class="header-title">DINAS SOSIAL</div>
-            <div class="header-sub">KABUPATEN LAMONGAN</div>
+    <div class="card-wrapper">
+        <div class="blue-header">
+            <div class="logo-box">
+                <img src="{{ public_path('logo-dinsos.jpg') }}" class="logo-img">
+            </div>
+            <div class="title-top">DINAS SOSIAL</div>
+            <div class="title-bottom">KABUPATEN LAMONGAN</div>
         </div>
 
-        <div class="photo-container">
-            @if($user->photo_path)
-                <img src="{{ public_path('storage/' . $user->photo_path) }}" class="photo-box">
+        <div class="photo-section">
+            @php
+                $photo = $user->photo_path && file_exists(public_path('storage/' . $user->photo_path)) 
+                    ? public_path('storage/' . $user->photo_path) 
+                    : null;
+            @endphp
+            @if($photo)
+                <img src="{{ $photo }}" class="photo-img">
             @else
-                <div class="photo-box"></div>
+                <div class="photo-img" style="display:inline-block; line-height:130pt; color:#ccc;">NO PHOTO</div>
             @endif
         </div>
 
-        <div class="info-container">
-            <div class="name">{{ $user->name }}</div>
-            <div class="nim">{{ $user->nim }}</div>
-            <div class="divider"></div>
-            <div class="school">{{ $user->school }}</div>
-            <div class="role-badge">PESERTA MAGANG</div>
+        <div class="info-section">
+            <div class="name-txt">{{ $user->name }}</div>
+            <div class="nim-txt">{{ $user->nim }}</div>
+            <div class="school-txt">{{ $user->school }}</div>
+            <div style="font-size: 7pt; color: #999; margin-top: 5pt; font-weight: bold;">IDENTITAS PESERTA MAGANG</div>
         </div>
 
-        <div class="qr-container">
+        <div class="qr-section">
             <img src="data:image/svg+xml;base64,{{ $qrCode }}" class="qr-img">
-            <div class="qr-text">SIMASOS DIGITAL ID</div>
         </div>
 
-        <div class="footer-bar"></div>
+        <div class="footer-strip"></div>
     </div>
 </body>
 </html>
