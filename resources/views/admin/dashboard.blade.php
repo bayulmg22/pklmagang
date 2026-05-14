@@ -6,77 +6,62 @@
     </x-slot>
 
     <div class="space-y-6">
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <!-- Total -->
-            <div class="content-card p-6 flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl shadow-sm border border-blue-100">👥</div>
-                <div>
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Pendaftar</p>
-                    <h3 class="text-2xl font-bold text-slate-800">{{ $stats['total_interns'] }}</h3>
-                </div>
+        <!-- Welcome Section -->
+        <div class="flex flex-col md:flex-row justify-between items-end gap-2 animate-fade">
+            <div>
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Ringkasan Sistem</h1>
+                <p class="text-xs font-medium text-slate-500">Monitor operasional magang secara real-time.</p>
             </div>
-            <!-- Pending -->
-            <div class="content-card p-6 flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl shadow-sm border border-amber-100">⏳</div>
-                <div>
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Menunggu ACC</p>
-                    <h3 class="text-2xl font-bold text-slate-800">{{ $stats['pending'] }}</h3>
-                </div>
-            </div>
-            <!-- Active -->
-            <div class="content-card p-6 flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl shadow-sm border border-emerald-100">✅</div>
-                <div>
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Peserta Aktif</p>
-                    <h3 class="text-2xl font-bold text-slate-800">{{ $stats['active'] }}</h3>
-                </div>
-            </div>
-            <!-- Alumni -->
-            <div class="content-card p-6 flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl shadow-sm border border-indigo-100">🎓</div>
-                <div>
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Alumni Selesai</p>
-                    <h3 class="text-2xl font-bold text-slate-800">{{ $stats['alumni'] }}</h3>
+            <div class="text-right hidden md:block">
+                <div class="flex items-center gap-2 justify-end bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100">
+                    <span class="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-[10px] font-black text-emerald-700 uppercase tracking-widest">Sistem Online</span>
                 </div>
             </div>
         </div>
 
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            @foreach([
+                ['Total Pendaftar', $stats['total_interns'], '👥', 'blue'],
+                ['Menunggu ACC', $stats['pending'], '⏳', 'amber'],
+                ['Peserta Aktif', $stats['active'], '✅', 'emerald'],
+                ['Alumni Selesai', $stats['alumni'], '🎓', 'indigo']
+            ] as $stat)
+            <div class="content-card p-4 relative group overflow-hidden">
+                <div class="flex items-center gap-4 relative z-10">
+                    <div class="w-11 h-11 rounded-xl bg-{{ $stat[3] }}-50 text-{{ $stat[3] }}-600 flex items-center justify-center text-xl shadow-sm border border-{{ $stat[3] }}-100 group-hover:scale-110 transition-transform">
+                        {{ $stat[2] }}
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">{{ $stat[0] }}</p>
+                        <h3 class="text-xl font-black text-slate-900 leading-none">{{ $stat[1] }}</h3>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
         <!-- Quick Access -->
         <div class="content-card overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                <h3 class="font-bold text-slate-800">Menu Manajemen Cepat</h3>
-                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Akses Langsung</span>
+            <div class="px-6 py-3 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest">Navigasi Fitur</h3>
+                <div class="w-6 h-6 rounded-full bg-white shadow-sm flex items-center justify-center text-[10px]">⚡</div>
             </div>
-            <div class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <a href="{{ route('admin.interns') }}" class="group p-4 rounded-xl border border-slate-100 hover:border-blue-200 hover:bg-blue-50 transition-all flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center text-xl group-hover:scale-110 transition">👥</div>
-                    <div>
-                        <p class="text-sm font-bold text-slate-800">Data Peserta</p>
-                        <p class="text-[10px] text-slate-500">Kelola Status Magang</p>
+            <div class="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                @foreach([
+                    ['Data Peserta', 'admin.interns', '👥', 'blue'],
+                    ['Absensi', 'admin.attendances', '📋', 'emerald'],
+                    ['Jurnal', 'admin.journals', '📝', 'indigo'],
+                    ['Penilaian', 'admin.evaluations', '⭐', 'amber']
+                ] as $menu)
+                <a href="{{ route($menu[1]) }}" class="group p-4 rounded-xl border border-slate-100 hover:border-{{ $menu[3] }}-200 hover:bg-{{ $menu[3] }}-50/30 transition-all flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center text-lg group-hover:scale-110 transition-all border border-slate-50">
+                        {{ $menu[2] }}
                     </div>
+                    <p class="text-xs font-bold text-slate-800 tracking-tight">{{ $menu[0] }}</p>
                 </a>
-                <a href="{{ route('admin.attendances') }}" class="group p-4 rounded-xl border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center text-xl group-hover:scale-110 transition">📋</div>
-                    <div>
-                        <p class="text-sm font-bold text-slate-800">Pantau Absensi</p>
-                        <p class="text-[10px] text-slate-500">Cek Kehadiran Harian</p>
-                    </div>
-                </a>
-                <a href="{{ route('admin.journals') }}" class="group p-4 rounded-xl border border-slate-100 hover:border-indigo-200 hover:bg-indigo-50 transition-all flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center text-xl group-hover:scale-110 transition">📝</div>
-                    <div>
-                        <p class="text-sm font-bold text-slate-800">Jurnal Kegiatan</p>
-                        <p class="text-[10px] text-slate-500">Lihat Aktivitas Harian</p>
-                    </div>
-                </a>
-                <a href="{{ route('admin.evaluations') }}" class="group p-4 rounded-xl border border-slate-100 hover:border-amber-200 hover:bg-amber-50 transition-all flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center text-xl group-hover:scale-110 transition">⭐</div>
-                    <div>
-                        <p class="text-sm font-bold text-slate-800">Penilaian Akhir</p>
-                        <p class="text-[10px] text-slate-500">Input Nilai & Predikat</p>
-                    </div>
-                </a>
+                @endforeach
             </div>
         </div>
     </div>

@@ -1,100 +1,66 @@
-<div class="sidebar-width bg-slate-900 flex-shrink-0 flex flex-col min-h-screen sticky top-0 z-40">
+<div class="sidebar-width bg-[#0f172a] flex-shrink-0 flex flex-col min-h-screen sticky top-0 z-40 border-r border-white/10">
     <!-- Brand -->
-    <div class="h-20 flex items-center px-6 border-b border-slate-800">
+    <div class="h-20 flex items-center px-6 border-b border-white/5 relative bg-[#1e293b]">
         <a href="/" class="flex items-center gap-3">
-            <img src="{{ asset('logo-dinsos.jpg') }}" class="h-10 w-auto rounded bg-white p-0.5" alt="SIMASOS">
-            <div class="leading-tight">
-                <span class="block text-white font-bold tracking-tight text-lg">SIMASOS</span>
-                <span class="block text-slate-400 text-[10px] uppercase font-bold tracking-wider">Dinsos Lamongan</span>
+            <div class="bg-white p-1 rounded-lg shadow-lg">
+                <img src="{{ asset('logo-dinsos.jpg') }}" class="h-9 w-auto" alt="Logo">
+            </div>
+            <div class="flex flex-col">
+                <span class="text-white font-black text-xl tracking-tighter leading-none">SIMASOS</span>
+                <span class="text-blue-400 text-[8px] font-black uppercase tracking-[0.2em] mt-1">DINSOS LAMONGAN</span>
             </div>
         </a>
     </div>
 
     <!-- Nav -->
-    <div class="flex-1 px-4 py-6 space-y-8 overflow-y-auto">
-        @if(auth()->user()->role === 'admin')
-            <div>
-                <p class="px-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">Main Menu</p>
-                <div class="space-y-1">
-                    <a href="{{ route('admin.dashboard') }}" 
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-blue-600 text-white shadow-md shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <span>📊</span> Dashboard
-                    </a>
-                </div>
-            </div>
+    <div class="flex-1 px-4 py-6 space-y-6 overflow-y-auto custom-scrollbar">
+        @php
+            $menus = auth()->user()->role === 'admin' ? [
+                'DASHBOARD' => [
+                    ['admin.dashboard', '📈', 'Dashboard'],
+                ],
+                'MANAJEMEN' => [
+                    ['admin.interns', '👥', 'Data Peserta'],
+                    ['admin.alumni', '🎓', 'Alumni Magang'],
+                ],
+                'MONITORING' => [
+                    ['admin.attendances', '📋', 'Presensi'],
+                    ['admin.journals', '📝', 'Jurnal'],
+                    ['admin.evaluations', '⭐', 'Penilaian'],
+                ]
+            ] : [
+                'MENU UTAMA' => [
+                    ['intern.dashboard', '🏠', 'Dashboard'],
+                    ['intern.card', '🪪', 'ID Card'],
+                    ['intern.attendance', '📋', 'Presensi'],
+                    ['intern.journals', '📝', 'Jurnal'],
+                    ['intern.evaluation', '⭐', 'Penilaian'],
+                ]
+            ];
+        @endphp
 
+        @foreach($menus as $label => $items)
             <div>
-                <p class="px-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">Internship</p>
+                <p class="px-3 text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] mb-3">{{ $label }}</p>
                 <div class="space-y-1">
-                    <a href="{{ route('admin.interns') }}" 
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.interns') ? 'bg-blue-600 text-white shadow-md shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <span>👥</span> Data Peserta
-                    </a>
-                    <a href="{{ route('admin.alumni') }}" 
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.alumni') ? 'bg-blue-600 text-white shadow-md shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <span>🎓</span> Alumni Magang
-                    </a>
+                    @foreach($items as $item)
+                        <a href="{{ route($item[0]) }}" 
+                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-bold transition-all {{ request()->routeIs($item[0]) ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:bg-white/5 hover:text-white' }}">
+                            <span class="text-base">{{ $item[1] }}</span>
+                            {{ $item[2] }}
+                        </a>
+                    @endforeach
                 </div>
             </div>
-
-            <div>
-                <p class="px-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">Monitoring</p>
-                <div class="space-y-1">
-                    <a href="{{ route('admin.attendances') }}" 
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.attendances') ? 'bg-blue-600 text-white shadow-md shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <span>📋</span> Pantau Absensi
-                    </a>
-                    <a href="{{ route('admin.journals') }}" 
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.journals') ? 'bg-blue-600 text-white shadow-md shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <span>📝</span> Jurnal Kegiatan
-                    </a>
-                    <a href="{{ route('admin.evaluations') }}" 
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.evaluations') ? 'bg-blue-600 text-white shadow-md shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <span>⭐</span> Penilaian Akhir
-                    </a>
-                </div>
-            </div>
-        @else
-            <div>
-                <p class="px-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">Intern Menu</p>
-                <div class="space-y-1">
-                    <a href="{{ route('intern.dashboard') }}" 
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('intern.dashboard') ? 'bg-blue-600 text-white shadow-md shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <span>🏠</span> Dashboard
-                    </a>
-                    <a href="{{ route('intern.card') }}" 
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('intern.card') ? 'bg-blue-600 text-white shadow-md shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <span>🪪</span> ID Card Magang
-                    </a>
-                    <a href="{{ route('intern.attendance') }}" 
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('intern.attendance') ? 'bg-blue-600 text-white shadow-md shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <span>📋</span> Absensi Harian
-                    </a>
-                    <a href="{{ route('intern.journals') }}" 
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('intern.journals') ? 'bg-blue-600 text-white shadow-md shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <span>📝</span> Jurnal Kegiatan
-                    </a>
-                    <a href="{{ route('intern.evaluation') }}" 
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('intern.evaluation') ? 'bg-blue-600 text-white shadow-md shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <span>⭐</span> Penilaian Akhir
-                    </a>
-                </div>
-            </div>
-        @endif
+        @endforeach
     </div>
 
     <!-- Footer -->
-    <div class="p-4 border-t border-slate-800 bg-slate-900/50">
-        <div class="flex items-center gap-3 px-2 mb-4">
-            <div class="flex-1 min-w-0">
-                <p class="text-xs font-bold text-white truncate">{{ auth()->user()->name }}</p>
-                <p class="text-[10px] text-slate-500 truncate">{{ ucfirst(auth()->user()->role) }}</p>
-            </div>
-        </div>
+    <div class="p-4 bg-[#0f172a] border-t border-white/5">
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-red-400 hover:bg-red-400/10 rounded-lg transition-colors">
-                🚪 Log Out
+            <button type="submit" class="flex items-center gap-2 px-3 py-1.5 text-[9px] font-black text-rose-500 hover:bg-rose-500/10 rounded-md transition-all border border-rose-500/20 uppercase tracking-widest mx-auto">
+                🚪 Logout
             </button>
         </form>
     </div>
