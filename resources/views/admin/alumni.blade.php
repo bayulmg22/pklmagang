@@ -49,7 +49,7 @@
                                             @endif
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $intern->evaluation ? $intern->evaluation->updated_at->format('d M Y') : '-' }}
+                                            {{ $intern->evaluation && $intern->evaluation->finished_at ? \Carbon\Carbon::parse($intern->evaluation->finished_at)->format('d M Y') : '-' }}
                                         </td>
                                     </tr>
                                 @empty

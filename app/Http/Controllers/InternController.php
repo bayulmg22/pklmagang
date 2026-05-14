@@ -64,52 +64,46 @@ class InternController extends Controller
     public function storeAttendance(Request $request)
     {
         $user = auth()->user();
-        $now = Carbon::now();
+        $now = Carbon::now('Asia/Jakarta');
         $today = $now->toDateString();
-        $time = $now->toTimeString();
+        $time = $now->format('H:i:s');
 
         $attendance = Attendance::where('user_id', $user->id)->where('date', $today)->first();
 
         if ($request->type == 'check_in') {
-            $statusInput = $request->input('status', 'hadir');
-            
-            // Default check if hadir
-            $status = $statusInput;
-            $finalTime = $time;
-
-            if ($statusInput === 'hadir') {
-                $end = Carbon::createFromTime(9, 0, 0);
-                if ($now->greaterThan($end)) {
-                    $status = 'telat';
-                }
-            } else {
-                // If Izin or Sakit, we might not need check_in_time, but let's record it anyway
-                // or we set it null. Let's record the time of submission.
+            if ($attendance) {
+                return back()->with('error', 'Anda sudah mencatat kehadiran hari ini.');
             }
 
-            if (!$attendance) {
-                Attendance::create([
-                    'user_id' => $user->id,
-                    'date' => $today,
-                    'check_in_time' => $finalTime,
-                    'status' => $status
-                ]);
-                return back()->with('success', 'Berhasil mencatat kehadiran.');
+            $request->validate([
+                'status' => 'required|in:izin,sakit',
+                'keterangan' => 'required|string|max:500',
+                'keterangan_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            ]);
+
+            $filePath = null;
+            if ($request->hasFile('keterangan_file')) {
+                $filePath = $request->file('keterangan_file')->store('keterangan', 'public');
             }
-            return back()->with('error', 'Anda sudah mencatat kehadiran hari ini.');
-        } 
-        
+
+            Attendance::create([
+                'user_id' => $user->id,
+                'date' => $today,
+                'check_in_time' => $time,
+                'status' => $request->status,
+                'keterangan' => $request->keterangan,
+                'keterangan_file' => $filePath,
+            ]);
+            return back()->with('success', 'Berhasil mencatat ' . ucfirst($request->status) . '.');
+        }
+
         if ($request->type == 'check_out') {
-            // Validasi jam pulang: > 15:00
-            $minOut = Carbon::createFromTime(15, 0, 0);
+            $minOut = Carbon::createFromTime(15, 0, 0, 'Asia/Jakarta');
             if ($now->lessThan($minOut)) {
-                return back()->with('error', 'Belum waktunya Absen Pulang (Minimal Jam 15:00).');
+                return back()->with('error', 'Belum waktunya Absen Pulang (Minimal Jam 15:00 WIB).');
             }
-
             if ($attendance && !$attendance->check_out_time) {
-                $attendance->update([
-                    'check_out_time' => $time
-                ]);
+                $attendance->update(['check_out_time' => $time]);
                 return back()->with('success', 'Berhasil Absen Pulang.');
             }
             return back()->with('error', 'Gagal absen pulang atau sudah absen pulang.');

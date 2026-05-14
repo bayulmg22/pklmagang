@@ -80,6 +80,7 @@ class AdminController extends Controller
             'kemampuan_beradaptasi' => 'required|numeric|min:0|max:100',
             'kualitas_hasil_kerja' => 'required|numeric|min:0|max:100',
             'penyusunan_laporan' => 'required|numeric|min:0|max:100',
+            'finished_at' => 'required|date',
             'comments' => 'required|string',
         ]);
 
@@ -96,7 +97,11 @@ class AdminController extends Controller
 
         \App\Models\Evaluation::updateOrCreate(
             ['user_id' => $user->id],
-            array_merge($request->all(), ['average' => $average, 'predicate' => $predicate])
+            array_merge($request->all(), [
+                'average' => $average, 
+                'predicate' => $predicate,
+                'finished_at' => $request->finished_at
+            ])
         );
 
         $user->update(['status' => 'finished']);

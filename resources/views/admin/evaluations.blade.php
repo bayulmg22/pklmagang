@@ -107,6 +107,10 @@
                                                             <input type="number" name="penyusunan_laporan" value="{{ $intern->evaluation->penyusunan_laporan ?? '' }}" min="0" max="100" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
                                                         </div>
                                                         <div class="col-span-2">
+                                                            <label class="block text-sm font-medium text-gray-700">Tanggal Selesai Magang</label>
+                                                            <input type="date" name="finished_at" value="{{ $intern->evaluation->finished_at ?? date('Y-m-d') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
+                                                        </div>
+                                                        <div class="col-span-2">
                                                             <label class="block text-sm font-medium text-gray-700">Komentar / Pesan Motivasi</label>
                                                             <textarea name="comments" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>{{ $intern->evaluation->comments ?? '' }}</textarea>
                                                         </div>

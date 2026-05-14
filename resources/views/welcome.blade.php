@@ -18,9 +18,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
-                            D
-                        </div>
+                        <img src="{{ asset('logo-dinsos.jpg') }}" class="h-10 w-auto" alt="Logo Lamongan">
                         <span class="font-bold text-xl text-gray-800 tracking-tight">Dinsos Lamongan</span>
                     </div>
                     <div class="flex items-center space-x-4">
@@ -118,9 +116,7 @@
         <footer class="bg-white border-t border-gray-200 py-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <div class="flex items-center justify-center gap-3 mb-6">
-                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                        D
-                    </div>
+                    <img src="{{ asset('logo-dinsos.jpg') }}" class="h-10 w-auto" alt="Logo Lamongan">
                     <span class="font-bold text-lg text-gray-800">Dinas Sosial Kab. Lamongan</span>
                 </div>
                 <p class="text-gray-500 text-sm">

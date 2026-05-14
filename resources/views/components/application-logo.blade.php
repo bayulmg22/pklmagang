@@ -1,1 +1,1 @@
-<img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Lambang_Kabupaten_Lamongan.png" {{ $attributes }} alt="Logo Lamongan">
+<img src="{{ asset('logo-dinsos.jpg') }}" {{ $attributes }} style="height:40px;width:auto;object-fit:contain;" alt="Logo Dinas Sosial Lamongan">

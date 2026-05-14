@@ -1,88 +1,94 @@
-<!-- Sidebar Container -->
-<div class="w-64 bg-white shadow-xl flex-shrink-0 flex flex-col hidden md:flex min-h-screen">
+<!-- Sidebar — SIMASOS Compact -->
+<div class="w-52 bg-gradient-to-b from-blue-900 via-blue-800 to-teal-800 shadow-2xl flex-shrink-0 flex flex-col h-screen sticky top-0" style="min-width:210px;max-width:210px;">
     <!-- Logo -->
-    <div class="h-20 flex items-center px-6 border-b border-gray-100 bg-gray-50">
-        <a href="/" class="flex items-center gap-3">
-            <x-application-logo class="block h-10 w-auto fill-current text-gray-800" />
-            <span class="font-bold text-gray-800 leading-tight">Dinsos<br>Lamongan</span>
-        </a>
+    <div class="flex items-center gap-2 px-4 py-3 border-b border-blue-700/40">
+        <img src="{{ asset('logo-dinsos.jpg') }}" style="height:32px;width:auto;border-radius:5px;background:white;padding:2px;" alt="Logo">
+        <div class="leading-tight">
+            <p class="font-bold text-white text-xs">SIMASOS</p>
+            <p class="text-blue-200 text-[10px]">Kab. Lamongan</p>
+        </div>
     </div>
 
-    <!-- Navigation Links -->
-    <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+    <!-- Navigation -->
+    <nav class="flex-1 px-2 py-3 overflow-hidden">
         @if(auth()->user()->role === 'admin')
-            <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-4">Menu Admin</p>
-            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" class="flex w-full px-3 py-2 rounded-lg mb-1">
-                Dashboard
-            </x-nav-link>
-            
-            <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-4">Kelola Peserta</p>
-            <x-nav-link :href="route('admin.interns')" :active="request()->routeIs('admin.interns')" class="flex w-full px-3 py-2 rounded-lg mb-1">
-                Data Peserta
-            </x-nav-link>
-            <x-nav-link :href="route('admin.alumni')" :active="request()->routeIs('admin.alumni')" class="flex w-full px-3 py-2 rounded-lg mb-1">
-                Alumni Magang
-            </x-nav-link>
+            <p class="px-2 text-[9px] font-bold text-blue-300 uppercase tracking-widest mb-1.5">Dashboard</p>
+            <a href="{{ route('admin.dashboard') }}"
+               class="flex items-center gap-2 w-full px-3 py-2 rounded-lg mb-1 text-xs font-medium transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-white/10' }}">
+                <span>📊</span> Dashboard
+            </a>
 
-            <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-4">Aktivitas</p>
-            <x-nav-link :href="route('admin.attendances')" :active="request()->routeIs('admin.attendances')" class="flex w-full px-3 py-2 rounded-lg mb-1">
-                Pantau Absensi
-            </x-nav-link>
-            <x-nav-link :href="route('admin.journals')" :active="request()->routeIs('admin.journals')" class="flex w-full px-3 py-2 rounded-lg mb-1">
-                Jurnal Kegiatan
-            </x-nav-link>
-            <x-nav-link :href="route('admin.evaluations')" :active="request()->routeIs('admin.evaluations')" class="flex w-full px-3 py-2 rounded-lg mb-1">
-                Penilaian Akhir
-            </x-nav-link>
+            <p class="px-2 text-[9px] font-bold text-blue-300 uppercase tracking-widest mb-1.5 mt-3">Peserta</p>
+            <a href="{{ route('admin.interns') }}"
+               class="flex items-center gap-2 w-full px-3 py-2 rounded-lg mb-1 text-xs font-medium transition-all {{ request()->routeIs('admin.interns') ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-white/10' }}">
+                <span>👥</span> Data Peserta
+            </a>
+            <a href="{{ route('admin.alumni') }}"
+               class="flex items-center gap-2 w-full px-3 py-2 rounded-lg mb-1 text-xs font-medium transition-all {{ request()->routeIs('admin.alumni') ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-white/10' }}">
+                <span>🎓</span> Alumni
+            </a>
+
+            <p class="px-2 text-[9px] font-bold text-blue-300 uppercase tracking-widest mb-1.5 mt-3">Aktivitas</p>
+            <a href="{{ route('admin.attendances') }}"
+               class="flex items-center gap-2 w-full px-3 py-2 rounded-lg mb-1 text-xs font-medium transition-all {{ request()->routeIs('admin.attendances') ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-white/10' }}">
+                <span>📋</span> Pantau Absensi
+            </a>
+            <a href="{{ route('admin.journals') }}"
+               class="flex items-center gap-2 w-full px-3 py-2 rounded-lg mb-1 text-xs font-medium transition-all {{ request()->routeIs('admin.journals') ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-white/10' }}">
+                <span>📝</span> Jurnal Kegiatan
+            </a>
+            <a href="{{ route('admin.evaluations') }}"
+               class="flex items-center gap-2 w-full px-3 py-2 rounded-lg mb-1 text-xs font-medium transition-all {{ request()->routeIs('admin.evaluations') ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-white/10' }}">
+                <span>⭐</span> Penilaian Akhir
+            </a>
         @else
-            <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-4">Menu Peserta</p>
-            <x-nav-link :href="route('intern.dashboard')" :active="request()->routeIs('intern.dashboard')" class="flex w-full px-3 py-2 rounded-lg mb-1">
-                Dashboard
-            </x-nav-link>
-            <x-nav-link :href="route('intern.card')" :active="request()->routeIs('intern.card')" class="flex w-full px-3 py-2 rounded-lg mb-1">
-                ID Card Magang
-            </x-nav-link>
-            <x-nav-link :href="route('intern.attendance')" :active="request()->routeIs('intern.attendance')" class="flex w-full px-3 py-2 rounded-lg mb-1">
-                Absensi Harian
-            </x-nav-link>
-            <x-nav-link :href="route('intern.journals')" :active="request()->routeIs('intern.journals')" class="flex w-full px-3 py-2 rounded-lg mb-1">
-                Jurnal Kegiatan
-            </x-nav-link>
-            <x-nav-link :href="route('intern.evaluation')" :active="request()->routeIs('intern.evaluation')" class="flex w-full px-3 py-2 rounded-lg mb-1">
-                Penilaian Akhir
-            </x-nav-link>
+            <p class="px-2 text-[9px] font-bold text-blue-300 uppercase tracking-widest mb-1.5">Menu Saya</p>
+            <a href="{{ route('intern.dashboard') }}"
+               class="flex items-center gap-2 w-full px-3 py-2 rounded-lg mb-1 text-xs font-medium transition-all {{ request()->routeIs('intern.dashboard') ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-white/10' }}">
+                <span>🏠</span> Dashboard
+            </a>
+            <a href="{{ route('intern.card') }}"
+               class="flex items-center gap-2 w-full px-3 py-2 rounded-lg mb-1 text-xs font-medium transition-all {{ request()->routeIs('intern.card') ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-white/10' }}">
+                <span>🪪</span> ID Card Magang
+            </a>
+            <a href="{{ route('intern.attendance') }}"
+               class="flex items-center gap-2 w-full px-3 py-2 rounded-lg mb-1 text-xs font-medium transition-all {{ request()->routeIs('intern.attendance') ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-white/10' }}">
+                <span>📋</span> Absensi Harian
+            </a>
+            <a href="{{ route('intern.journals') }}"
+               class="flex items-center gap-2 w-full px-3 py-2 rounded-lg mb-1 text-xs font-medium transition-all {{ request()->routeIs('intern.journals') ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-white/10' }}">
+                <span>📝</span> Jurnal Kegiatan
+            </a>
+            <a href="{{ route('intern.evaluation') }}"
+               class="flex items-center gap-2 w-full px-3 py-2 rounded-lg mb-1 text-xs font-medium transition-all {{ request()->routeIs('intern.evaluation') ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-white/10' }}">
+                <span>⭐</span> Penilaian Akhir
+            </a>
         @endif
     </nav>
 
-    <!-- User Profile & Logout -->
-    <div class="border-t border-gray-100 p-4 bg-gray-50">
-        <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold overflow-hidden border">
+    <!-- User Info & Logout -->
+    <div class="border-t border-blue-700/40 px-3 py-3 bg-blue-950/30">
+        <div class="flex items-center gap-2 mb-2">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-teal-400 to-green-500 flex items-center justify-center text-white font-bold text-xs overflow-hidden border border-white/30 flex-shrink-0">
                 @if(auth()->user()->photo_path)
                     <img src="{{ asset('storage/' . auth()->user()->photo_path) }}" class="w-full h-full object-cover">
                 @else
-                    {{ substr(auth()->user()->name, 0, 1) }}
+                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                 @endif
             </div>
-            <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold text-gray-900 truncate">{{ auth()->user()->name }}</p>
-                <p class="text-xs text-gray-500 truncate">{{ ucfirst(auth()->user()->role) }}</p>
+            <div class="min-w-0">
+                <p class="text-xs font-semibold text-white truncate leading-tight">{{ auth()->user()->name }}</p>
+                <p class="text-[10px] text-teal-300">{{ ucfirst(auth()->user()->role) }}</p>
             </div>
         </div>
-        
-        <div class="flex flex-col gap-2">
-            <a href="{{ route('profile.edit') }}" class="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition text-center">
-                Pengaturan Profil
-            </a>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="block w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition text-center font-semibold">
-                    Log Out
-                </button>
-            </form>
-        </div>
+        <a href="{{ route('profile.edit') }}" class="flex items-center gap-1.5 w-full px-2 py-1.5 text-[11px] text-blue-200 hover:bg-white/10 rounded-md transition mb-0.5">
+            ⚙️ Profil
+        </a>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="flex items-center gap-1.5 w-full px-2 py-1.5 text-[11px] text-red-300 hover:bg-red-500/20 rounded-md transition font-semibold">
+                🚪 Keluar
+            </button>
+        </form>
     </div>
 </div>
-
-<!-- Mobile Sidebar Overlay & Nav -->
-<!-- (Sederhananya kita tampilkan tombol menu di topbar untuk mobile) -->

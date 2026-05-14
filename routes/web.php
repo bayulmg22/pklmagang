@@ -18,6 +18,7 @@ use App\Http\Controllers\AdminController;
 
 // Admin Routes
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function() { return redirect()->route('admin.dashboard'); });
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/interns', [AdminController::class, 'interns'])->name('interns');
     Route::get('/alumni', [AdminController::class, 'alumni'])->name('alumni');
