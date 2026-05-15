@@ -77,22 +77,26 @@
         <tbody>
             @php $no = 1; @endphp
             @foreach($attendances as $date => $group)
-            @php $first = $group->first(); @endphp
+            @php 
+                $minIn = $group->whereNotNull('check_in_time')->min('check_in_time');
+                $maxOut = $group->whereNotNull('check_out_time')->max('check_out_time');
+                
+                // Priority: If any record is HADIR, show only HADIR. Otherwise show latest status.
+                if ($group->where('status', 'hadir')->count() > 0) {
+                    $displayStatus = 'HADIR';
+                } else {
+                    $displayStatus = strtoupper($group->last()->status);
+                }
+            @endphp
             <tr>
                 <td>{{ $no++ }}</td>
                 <td style="text-align: left; padding-left: 15px; font-weight: bold;">
                     {{ \Carbon\Carbon::parse($date)->translatedFormat('l, d F Y') }}
                 </td>
-                <td style="font-weight: bold;">{{ $first->check_in_time ?? '—' }}</td>
-                <td style="font-weight: bold;">{{ $first->check_out_time ?? '—' }}</td>
+                <td style="font-weight: bold;">{{ $minIn ?? '—' }}</td>
+                <td style="font-weight: bold;">{{ $maxOut ?? '—' }}</td>
                 <td>
-                    @if($group->count() > 1)
-                        @foreach($group as $att)
-                            <div class="status-badge">{{ $att->status }}</div>
-                        @endforeach
-                    @else
-                        <span class="status-badge">{{ $first->status }}</span>
-                    @endif
+                    <span class="status-badge">{{ $displayStatus }}</span>
                 </td>
             </tr>
             @endforeach

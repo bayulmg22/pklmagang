@@ -63,20 +63,47 @@ class AttendanceController extends Controller
             }
         }
 
-        // Special Rule: If SAKIT, also close any active HADIR sessions
+        // Rule 1: Only auto-check-out if the status becomes SAKIT
+        $hasActiveSession = Attendance::where('user_id', $user->id)
+            ->where('date', $today)
+            ->whereIn('status', ['hadir', 'izin'])
+            ->whereNull('check_out_time')
+            ->first();
+
+        if ($request->status === 'sakit' && $hasActiveSession) {
+            $hasActiveSession->update(['check_out_time' => $currentTime]);
+        }
+
+        // Determine times for the NEW record
+        $recordInTime = $currentTime;
+        $recordOutTime = null;
+
         if ($request->status === 'sakit') {
-            Attendance::where('user_id', $user->id)
-                ->where('date', $today)
-                ->where('status', 'hadir')
-                ->whereNull('check_out_time')
-                ->update(['check_out_time' => $currentTime]);
+            $isFirstRecord = !Attendance::where('user_id', $user->id)->where('date', $today)->exists();
+            if ($isFirstRecord) {
+                // Rule 3: Sakit from the start -> null times
+                $recordInTime = null;
+                $recordOutTime = null;
+            } else {
+                // Rule 2: Hadir/Izin then Sakit -> Auto check-out
+                $recordInTime = $currentTime;
+                $recordOutTime = $currentTime;
+            }
+        } elseif ($request->status === 'izin') {
+            // Rule 1: Izin doesn't trigger auto-check-out
+            $isFirstRecord = !Attendance::where('user_id', $user->id)->where('date', $today)->exists();
+            if ($isFirstRecord) {
+                $recordInTime = null;
+                $recordOutTime = null;
+            }
         }
 
         // Create new record
         Attendance::create([
             'user_id' => $user->id,
             'date' => $today,
-            'check_in_time' => $currentTime,
+            'check_in_time' => $recordInTime,
+            'check_out_time' => $recordOutTime,
             'status' => $request->status,
             'keterangan' => $final_keterangan,
         ]);

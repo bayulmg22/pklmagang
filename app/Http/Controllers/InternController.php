@@ -184,7 +184,8 @@ class InternController extends Controller
     public function printAttendance()
     {
         $user = auth()->user();
-        // Group by date to handle potential multiple records on same day
+        app()->setLocale('id'); // Force Indonesian locale
+        
         $attendances = \App\Models\Attendance::where('user_id', $user->id)
                         ->orderBy('date', 'asc')
                         ->get()
@@ -197,7 +198,8 @@ class InternController extends Controller
     public function printJournals()
     {
         $user = auth()->user();
-        // Group by date to combine multiple activities on the same day
+        app()->setLocale('id'); // Force Indonesian locale
+        
         $journals = \App\Models\Journal::where('user_id', $user->id)
                         ->orderBy('date', 'asc')
                         ->get()
