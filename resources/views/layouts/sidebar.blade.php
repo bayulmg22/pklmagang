@@ -1,4 +1,4 @@
-<div class="w-64 bg-gradient-to-b from-sky-100 to-emerald-100 flex-shrink-0 flex flex-col min-h-screen sticky top-0 z-40 border-r border-sky-200">
+<div class="hidden lg:flex w-64 bg-gradient-to-b from-sky-100 to-emerald-100 flex-shrink-0 flex flex-col min-h-screen sticky top-0 z-40 border-r border-sky-200">
     <!-- Brand -->
     <div class="h-24 flex items-center px-6 bg-white/50 border-b border-sky-200 backdrop-blur-sm">
         <div class="flex items-center gap-3">
@@ -16,7 +16,9 @@
     <div class="flex-1 px-4 py-6 space-y-8 overflow-y-auto custom-scrollbar">
         @php
             \Carbon\Carbon::setLocale('id');
-            $role = auth()->user()->role;
+            $user = auth()->user();
+            $role = $user ? $user->role : 'guest';
+            
             $adminMenus = [
                 'ADMINISTRASI' => [
                     ['admin.dashboard', '📈', 'Dashboard'],
@@ -38,7 +40,14 @@
                     ['intern.evaluation', '⭐', 'Penilaian'],
                 ]
             ];
-            $menus = $role === 'admin' ? $adminMenus : $internMenus;
+            
+            if ($role === 'admin') {
+                $menus = $adminMenus;
+            } elseif ($role === 'intern') {
+                $menus = $internMenus;
+            } else {
+                $menus = [];
+            }
         @endphp
 
         @foreach($menus as $label => $items)
@@ -58,6 +67,7 @@
     </div>
 
     <!-- Footer -->
+    @auth
     <div class="p-4 bg-white/30 border-t border-sky-200">
         <form method="POST" action="{{ route('logout') }}">
             @csrf
@@ -66,4 +76,5 @@
             </button>
         </form>
     </div>
+    @endauth
 </div>

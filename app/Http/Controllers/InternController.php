@@ -42,7 +42,7 @@ class InternController extends Controller
         }
 
         // Generate QR Code linking to automated attendance scan page
-        $qrCode = base64_encode(QrCode::format('svg')->size(150)->generate(route('attendance.scan', $user)));
+        $qrCode = base64_encode(QrCode::format('svg')->size(150)->generate('http://192.168.1.9:8000/absensi/' . $user->id));
 
         // Encode photo to Base64 for PDF stability
         $photoBase64 = null;

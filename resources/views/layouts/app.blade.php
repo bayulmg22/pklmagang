@@ -81,46 +81,53 @@
                 
                 <!-- Desktop Header -->
                 <header class="glass-header sticky top-0 z-30">
-                    <div class="px-6 py-3 flex justify-between items-center">
+                    <div class="px-4 sm:px-6 py-3 flex justify-between items-center">
                         <!-- Left Side: System Name & Title -->
-                        <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-3 sm:gap-4">
                             <div class="flex items-center gap-2">
                                 <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white text-xs font-black shadow-lg">S</div>
+                                <span class="text-sm font-black text-slate-800 lg:hidden uppercase tracking-tight">SIMASOS</span>
                             </div>
                             <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
                             @isset($header)
-                                <div class="text-sm font-black text-slate-800 uppercase tracking-widest hidden md:block">
+                                <div class="text-[10px] sm:text-sm font-black text-slate-800 uppercase tracking-widest truncate max-w-[150px] sm:max-w-none">
                                     {{ $header }}
                                 </div>
                             @endisset
                         </div>
 
                         <!-- Right Side: Date, Time & Profile -->
-                        <div class="flex items-center gap-6">
-                            <div class="hidden sm:flex flex-col items-end leading-none">
+                        <div class="flex items-center gap-3 sm:gap-6">
+                            <div class="hidden md:flex flex-col items-end leading-none">
                                 <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">DATA SISTEM</span>
                                 <span class="text-xs font-black text-slate-800">
                                     {{ \Carbon\Carbon::now('Asia/Jakarta')->translatedFormat('l, d F Y') }}
                                 </span>
                             </div>
 
-                            <div class="h-8 w-px bg-slate-200 hidden sm:block"></div>
+                            <div class="h-8 w-px bg-slate-200 hidden md:block"></div>
 
                             <div class="flex items-center gap-3">
-                                <div class="flex flex-col items-end text-right hidden sm:block leading-none">
-                                    <p class="text-xs font-black text-slate-900 mb-1">{{ auth()->user()->name }}</p>
-                                    <p class="text-[9px] font-black text-blue-500 uppercase tracking-widest">{{ auth()->user()->role }}</p>
-                                </div>
-                                <a href="{{ route('profile.edit') }}" title="Pengaturan Profil" class="group relative">
-                                    <div class="w-10 h-10 rounded-xl bg-slate-900 overflow-hidden flex items-center justify-center text-xs font-black text-white shadow-xl transition-all group-hover:scale-110 group-hover:ring-4 group-hover:ring-blue-500/20">
-                                        @if(auth()->user()->photo_path)
-                                            <img src="{{ asset('storage/' . auth()->user()->photo_path) }}?t={{ time() }}" class="w-full h-full object-cover">
-                                        @else
-                                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                                        @endif
+                                @auth
+                                    <div class="flex flex-col items-end text-right hidden sm:block leading-none">
+                                        <p class="text-xs font-black text-slate-900 mb-1">{{ auth()->user()->name }}</p>
+                                        <p class="text-[9px] font-black text-blue-500 uppercase tracking-widest">{{ auth()->user()->role }}</p>
                                     </div>
-                                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center text-[8px] text-white animate-pulse"></div>
-                                </a>
+                                    <a href="{{ route('profile.edit') }}" title="Pengaturan Profil" class="group relative">
+                                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-slate-900 overflow-hidden flex items-center justify-center text-xs font-black text-white shadow-xl transition-all group-hover:scale-110 group-hover:ring-4 group-hover:ring-blue-500/20">
+                                            @if(auth()->user()->photo_path)
+                                                <img src="{{ asset('storage/' . auth()->user()->photo_path) }}?t={{ time() }}" class="w-full h-full object-cover">
+                                            @else
+                                                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                            @endif
+                                        </div>
+                                        <div class="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center text-[8px] text-white animate-pulse"></div>
+                                    </a>
+                                @else
+                                    <a href="{{ route('login') }}" class="text-[10px] sm:text-xs font-black text-blue-600 uppercase tracking-widest hover:text-blue-700 transition-colors">
+                                        Login 🔑
+                                    </a>
+                                @endauth
                             </div>
                         </div>
                     </div>

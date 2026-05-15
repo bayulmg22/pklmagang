@@ -21,39 +21,26 @@
                             <th class="px-6 py-4 font-bold">Masuk</th>
                             <th class="px-6 py-4 font-bold">Pulang</th>
                             <th class="px-6 py-4 font-bold">Status</th>
+                            <th class="px-6 py-4 font-bold">Keterangan</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @forelse ($attendancesGrouped as $date => $attendances)
                             <tr class="bg-slate-50/50">
-                                <td colspan="5" class="px-6 py-3 text-xs font-black text-slate-900 uppercase tracking-[0.2em] bg-slate-100/80 border-y border-slate-200">
+                                <td colspan="6" class="px-6 py-3 text-xs font-black text-slate-900 uppercase tracking-[0.2em] bg-slate-100/80 border-y border-slate-200">
                                     🗓️ {{ \Carbon\Carbon::parse($date)->locale('id')->translatedFormat('d F Y') }}
                                 </td>
                             </tr>
                             @foreach($attendances as $attendance)
                             <tr class="hover:bg-slate-50/50 transition-colors">
                                 <td class="px-6 py-4">
-                                    <div class="font-bold text-slate-800">{{ $attendance->user?->name ?? 'N/A' }}</div>
-                                    @if($attendance->keterangan)
-                                        <div class="text-[9px] text-blue-600 font-bold mt-0.5 italic leading-tight max-w-[200px]">{{ $attendance->keterangan }}</div>
-                                    @endif
+                                    <div class="font-bold text-slate-900 text-sm uppercase tracking-tight leading-none">{{ $attendance->user?->name ?? 'N/A' }}</div>
                                 </td>
                                 <td class="px-6 py-4 text-slate-500 font-medium text-xs">
                                     {{ $attendance->user?->school ?? '-' }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="text-slate-600 font-bold text-xs">{{ $attendance->check_in_time ?? '—' }}</div>
-                                    @if($attendance->check_in_time)
-                                        @php
-                                            $checkIn = \Carbon\Carbon::parse($attendance->check_in_time);
-                                            $isLate = $checkIn->hour >= 9;
-                                        @endphp
-                                        @if($isLate)
-                                            <span class="text-[8px] font-black text-rose-500 uppercase tracking-tighter">Terlambat</span>
-                                        @else
-                                            <span class="text-[8px] font-black text-emerald-500 uppercase tracking-tighter">Tepat Waktu</span>
-                                        @endif
-                                    @endif
                                 </td>
                                 <td class="px-6 py-4 text-slate-600 font-bold text-xs">
                                     {{ $attendance->check_out_time ?? '—' }}
@@ -71,11 +58,24 @@
                                         {{ $attendance->status }}
                                     </span>
                                 </td>
+                                <td class="px-6 py-4">
+                                    @if($attendance->keterangan)
+                                        @php
+                                            $isLate = str_contains($attendance->keterangan, 'TERLAMBAT');
+                                            $badgeClass = $isLate ? 'bg-amber-100 text-amber-700 border-amber-200' : 'bg-emerald-100 text-emerald-700 border-emerald-200';
+                                        @endphp
+                                        <div class="inline-block px-2 py-1 {{ $badgeClass }} text-[8px] font-black uppercase tracking-widest rounded border shadow-sm">
+                                            {{ $attendance->keterangan }}
+                                        </div>
+                                    @else
+                                        <span class="text-slate-300 italic text-[10px]">—</span>
+                                    @endif
+                                </td>
                             </tr>
                             @endforeach
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-12 text-center text-slate-400">
+                                <td colspan="6" class="px-6 py-12 text-center text-slate-400">
                                     <p class="text-3xl mb-2">📋</p>
                                     <p class="text-sm font-medium">Belum ada data absensi untuk periode ini.</p>
                                 </td>

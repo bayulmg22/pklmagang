@@ -135,7 +135,6 @@
 
         <div class="qr-section">
             <img src="data:image/svg+xml;base64,{{ $qrCode }}" class="qr-code">
-            <div style="font-size: 5pt; color: #999; margin-top: 4pt; font-weight: bold;">DICETAK: {{ now()->translatedFormat('l, d F Y') }}</div>
         </div>
 
         <div class="footer-line"></div>

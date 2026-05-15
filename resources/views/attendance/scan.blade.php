@@ -28,6 +28,13 @@
             </div>
 
             <div class="p-10">
+                <!-- Date and Time at the Top -->
+                <div class="text-center mb-10 -mt-5">
+                    <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-2">Waktu Absensi</div>
+                    <div class="text-4xl font-black text-slate-900 tabular-nums">{{ now()->format('H:i') }}</div>
+                    <div class="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">{{ now()->locale('id')->translatedFormat('l, d F Y') }}</div>
+                </div>
+
                 @if(session('success'))
                     <div class="mb-8 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl text-xs font-black uppercase tracking-wide flex items-center gap-3">
                         <span class="text-lg">✅</span> {{ session('success') }}
@@ -40,13 +47,7 @@
                     </div>
                 @endif
 
-                <div class="text-center mb-10">
-                    <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-2">Waktu Saat Ini</div>
-                    <div class="text-4xl font-black text-slate-900 tabular-nums">{{ now()->format('H:i') }}</div>
-                    <div class="text-[10px] font-bold text-slate-400 mt-1">{{ now()->translatedFormat('l, d F Y') }}</div>
-                </div>
-
-                <form action="{{ route('attendance.store', $user) }}" method="POST" class="space-y-8">
+                <form action="http://192.168.1.9:8000/absensi/{{ $user->id }}" method="POST" class="space-y-8">
                     @csrf
                     
                     @if(!$attendance || ($attendance && !$attendance->check_out_time))

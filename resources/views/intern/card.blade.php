@@ -109,10 +109,9 @@
 
                 <!-- QR Section (Absolute Bottom like PDF) -->
                 <div class="absolute bottom-5 w-full text-center">
-                    <div class="inline-block p-1.5 bg-white border border-slate-50 shadow-sm rounded-lg mb-1">
-                        {!! \SimpleSoftwareIO\QrCode\Facades\QrCode::size(65)->generate(route('attendance.scan', auth()->user())) !!}
+                    <div class="inline-block p-1.5 bg-white border border-slate-50 shadow-sm rounded-lg">
+                        {!! \SimpleSoftwareIO\QrCode\Facades\QrCode::size(65)->generate('http://192.168.1.9:8000/absensi/' . auth()->id()) !!}
                     </div>
-                    <div class="text-[6px] font-black text-slate-400 uppercase tracking-widest">Dicetak: {{ now()->locale('id')->translatedFormat('d F Y') }}</div>
                 </div>
 
                 <!-- Footer Strip -->
