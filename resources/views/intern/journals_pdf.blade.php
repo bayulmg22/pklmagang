@@ -67,12 +67,12 @@
         </table>
     </div>
 
-    <table class="table" style="width: 100%; table-layout: fixed;">
+    <table class="table" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
         <thead>
             <tr>
-                <th style="width: 40px;">No</th>
-                <th style="width: 150px;">Hari / Tanggal</th>
-                <th style="text-align: left; width: auto;">Deskripsi Aktivitas / Kegiatan</th>
+                <th style="width: 8%;">No</th>
+                <th style="width: 22%;">Hari / Tanggal</th>
+                <th style="text-align: left; width: 70%;">Deskripsi Aktivitas / Kegiatan</th>
             </tr>
         </thead>
         <tbody>
@@ -80,18 +80,27 @@
             @foreach($journals as $date => $group)
             <tr>
                 <td style="text-align: center; vertical-align: top;">{{ $no++ }}</td>
-                <td style="text-align: center; font-weight: bold; font-size: 11px; vertical-align: top;">
+                <td style="text-align: center; font-weight: bold; font-size: 10px; vertical-align: top;">
                     {{ \Carbon\Carbon::parse($date)->translatedFormat('l, d F Y') }}
                 </td>
-                <td style="text-align: justify; line-height: 1.5; vertical-align: top;">
+                <td style="text-align: justify; line-height: 1.5; vertical-align: top; word-wrap: break-word;">
                     @if($group->count() > 1)
-                        @foreach($group as $item)
-                            <div style="margin-bottom: 10px;">
-                                <strong>{{ $loop->iteration }}.</strong> {!! nl2br(e($item->activity)) !!}
-                            </div>
-                        @endforeach
+                        <table style="width: 100%; border: none; border-collapse: collapse;">
+                            @foreach($group as $item)
+                            <tr>
+                                <td style="width: 1%; white-space: nowrap; border: none; vertical-align: top; padding: 0; padding-right: 5px; padding-bottom: 8px;">
+                                    <strong>{{ $loop->iteration }}.</strong>
+                                </td>
+                                <td style="border: none; vertical-align: top; padding: 0; padding-bottom: 8px; text-align: justify; word-wrap: break-word; word-break: break-all;">
+                                    {!! nl2br(e($item->activity)) !!}
+                                </td>
+                            </tr>
+                            @endforeach
+                        </table>
                     @else
-                        {!! nl2br(e($group->first()->activity)) !!}
+                        <div style="word-wrap: break-word; word-break: break-all; text-align: justify;">
+                            {!! nl2br(e($group->first()->activity)) !!}
+                        </div>
                     @endif
                 </td>
             </tr>
