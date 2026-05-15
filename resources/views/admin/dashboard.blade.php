@@ -64,5 +64,8 @@
                 @endforeach
             </div>
         </div>
+
+        <!-- Footer Banner -->
+        <x-footer-banner />
     </div>
 </x-app-layout>

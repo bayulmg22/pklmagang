@@ -7,28 +7,28 @@
 
     <div class="space-y-6">
         <!-- Profile Header Card -->
-        <div class="content-card p-6 flex flex-col md:flex-row items-center gap-6 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-full bg-slate-50 -skew-x-12 transform translate-x-16"></div>
+        <div class="content-card p-4 sm:p-6 flex flex-col md:flex-row items-center gap-4 sm:gap-6 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-full bg-slate-50 -skew-x-12 transform translate-x-16 opacity-50"></div>
             
-            <div class="w-24 h-24 rounded-2xl bg-slate-100 border-4 border-white shadow-sm overflow-hidden flex-shrink-0 relative z-10">
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-slate-100 border-4 border-white shadow-sm overflow-hidden flex-shrink-0 relative z-10">
                 @if(auth()->user()->photo_path)
-                    <img src="{{ asset('storage/' . auth()->user()->photo_path) }}" class="w-full h-full object-cover">
+                    <img src="{{ asset('storage/' . auth()->user()->photo_path) }}?t={{ time() }}" class="w-full h-full object-cover">
                 @else
-                    <div class="w-full h-full flex items-center justify-center text-4xl text-slate-300">👤</div>
+                    <div class="w-full h-full flex items-center justify-center text-3xl sm:text-4xl text-slate-300">👤</div>
                 @endif
             </div>
             
-            <div class="flex-1 text-center md:text-left relative z-10">
-                <h3 class="text-2xl font-bold text-slate-800">{{ auth()->user()->name }}</h3>
-                <p class="text-blue-600 font-bold text-sm tracking-widest">{{ auth()->user()->nim }}</p>
-                <div class="mt-2 flex flex-wrap justify-center md:justify-start gap-2">
-                    <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 text-[10px] font-bold uppercase border border-slate-200">{{ auth()->user()->school }}</span>
+            <div class="flex-1 text-center md:text-left relative z-10 space-y-1">
+                <h3 class="text-lg sm:text-2xl font-black text-slate-800 leading-tight">{{ auth()->user()->name }}</h3>
+                <p class="text-blue-600 font-bold text-[10px] sm:text-sm tracking-widest uppercase">{{ auth()->user()->nim }}</p>
+                <div class="pt-1 flex flex-col md:flex-row items-center md:justify-start gap-2">
+                    <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[8px] sm:text-[10px] font-black uppercase border border-slate-200">{{ auth()->user()->school }}</span>
                     @if(auth()->user()->status === 'approved')
-                        <span class="px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase border border-emerald-100">Status: Aktif</span>
+                        <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-600 text-[8px] sm:text-[10px] font-black uppercase border border-emerald-100">Status: Aktif</span>
                     @elseif(auth()->user()->status === 'pending')
-                        <span class="px-2.5 py-1 rounded-md bg-amber-50 text-amber-600 text-[10px] font-bold uppercase border border-amber-100">Status: Menunggu ACC</span>
+                        <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-600 text-[8px] sm:text-[10px] font-black uppercase border border-amber-100">Status: Menunggu ACC</span>
                     @else
-                        <span class="px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-600 text-[10px] font-bold uppercase border border-indigo-100">Status: Selesai</span>
+                        <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-600 text-[8px] sm:text-[10px] font-black uppercase border border-indigo-100">Status: Selesai</span>
                     @endif
                 </div>
             </div>
@@ -76,13 +76,7 @@
             </div>
         </div>
 
-        <!-- Info Banner -->
-        <div class="p-6 bg-slate-900 rounded-2xl text-white flex items-center justify-between">
-            <div>
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Dinas Sosial Kab. Lamongan</p>
-                <h4 class="text-xl font-bold italic">SIMASOS <span class="font-normal text-slate-500 text-sm">— Sistem Manajemen Magang</span></h4>
-            </div>
-            <div class="text-4xl opacity-20">🏛️</div>
-        </div>
+        <!-- Footer Banner -->
+        <x-footer-banner />
     </div>
 </x-app-layout>

@@ -71,33 +71,99 @@
             ::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
         </style>
     </head>
-    <body class="font-sans antialiased text-slate-900 bg-main">
+    <body class="font-sans antialiased text-slate-900 bg-main" x-data="{ mobileMenuOpen: false }">
+        @php
+            $currentRoute = request()->route() ? request()->route()->getName() : '';
+            $iconMap = [
+                'admin.dashboard' => '📈',
+                'admin.interns' => '👥',
+                'admin.alumni' => '🎓',
+                'admin.attendances' => '📋',
+                'admin.journals' => '📝',
+                'admin.evaluations' => '⭐',
+                'intern.dashboard' => '🏠',
+                'intern.card' => '🪪',
+                'intern.attendance' => '📋',
+                'intern.journals' => '📝',
+                'intern.evaluation' => '⭐',
+            ];
+            $currentIcon = $iconMap[$currentRoute] ?? 'S';
+        @endphp
+
         <div class="flex min-h-screen">
-            <!-- Sidebar -->
-            @include('layouts.sidebar')
+            <!-- Sidebar Desktop -->
+            <aside class="hidden lg:flex w-64 bg-gradient-to-b from-sky-100 to-emerald-100 flex-shrink-0 flex-col min-h-screen sticky top-0 z-40 border-r border-sky-200">
+                @include('layouts.sidebar')
+            </aside>
+
+            <!-- Mobile Sidebar Drawer -->
+            <div x-show="mobileMenuOpen" 
+                 class="fixed inset-0 z-50 lg:hidden" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0">
+                
+                <!-- Backdrop -->
+                <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" @click="mobileMenuOpen = false"></div>
+
+                <!-- Sidebar Content -->
+                <div class="fixed inset-y-0 left-0 w-72 bg-gradient-to-b from-sky-50 to-emerald-50 shadow-2xl flex flex-col"
+                     x-transition:enter="transition ease-out duration-300 transform"
+                     x-transition:enter-start="-translate-x-full"
+                     x-transition:enter-end="translate-x-0"
+                     x-transition:leave="transition ease-in duration-200 transform"
+                     x-transition:leave-start="translate-x-0"
+                     x-transition:leave-end="-translate-x-full">
+                    
+                    <div class="absolute top-4 right-4 z-50">
+                        <button @click="mobileMenuOpen = false" class="p-2 rounded-xl bg-white/80 text-slate-600 shadow-sm border border-sky-100">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+
+                    <div class="flex-1 overflow-y-auto">
+                        @include('layouts.sidebar')
+                    </div>
+                </div>
+            </div>
 
             <!-- Main Content -->
             <div class="flex-1 flex flex-col min-w-0">
                 
-                <!-- Desktop Header -->
+                <!-- Responsive Header -->
                 <header class="glass-header sticky top-0 z-30">
-                    <div class="px-4 sm:px-6 py-3 flex justify-between items-center">
-                        <!-- Left Side: System Name & Title -->
-                        <div class="flex items-center gap-3 sm:gap-4">
-                            <div class="flex items-center gap-2">
-                                <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white text-xs font-black shadow-lg">S</div>
-                                <span class="text-sm font-black text-slate-800 lg:hidden uppercase tracking-tight">SIMASOS</span>
-                            </div>
-                            <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
-                            @isset($header)
-                                <div class="text-[10px] sm:text-sm font-black text-slate-800 uppercase tracking-widest truncate max-w-[150px] sm:max-w-none">
-                                    {{ $header }}
+                    <div class="px-4 sm:px-6 py-2.5 flex justify-between items-center">
+                        <!-- Left Side -->
+                        <div class="flex items-center gap-3">
+                            <!-- Mobile Menu Toggle -->
+                            <button @click="mobileMenuOpen = true" class="lg:hidden p-2 -ml-2 rounded-xl hover:bg-slate-100 text-slate-600 transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                            </button>
+
+                            <!-- Desktop Branding -->
+                            <div class="hidden lg:flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white text-base font-black shadow-lg">
+                                    {{ $currentIcon }}
                                 </div>
-                            @endisset
+                                <div class="flex flex-col leading-none">
+                                    <span class="text-xs font-black text-slate-800 uppercase tracking-tight">SIMASOS</span>
+                                    <span class="text-[8px] font-bold text-blue-500 uppercase tracking-widest mt-0.5">Sistem Magang</span>
+                                </div>
+                                <div class="h-6 w-px bg-slate-200 mx-2"></div>
+                                @isset($header)
+                                    <div class="text-sm font-black text-slate-800 uppercase tracking-widest truncate max-w-[300px]">
+                                        {{ $header }}
+                                    </div>
+                                @endisset
+                            </div>
                         </div>
 
-                        <!-- Right Side: Date, Time & Profile -->
+                        <!-- Right Side -->
                         <div class="flex items-center gap-3 sm:gap-6">
+                            <!-- Desktop Date/Time -->
                             <div class="hidden md:flex flex-col items-end leading-none">
                                 <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">DATA SISTEM</span>
                                 <span class="text-xs font-black text-slate-800">
@@ -107,25 +173,22 @@
 
                             <div class="h-8 w-px bg-slate-200 hidden md:block"></div>
 
-                            <div class="flex items-center gap-3">
+                            <!-- User Profile -->
+                            <div class="flex items-center gap-2 sm:gap-3">
                                 @auth
-                                    <div class="flex flex-col items-end text-right hidden sm:block leading-none">
-                                        <p class="text-xs font-black text-slate-900 mb-1">{{ auth()->user()->name }}</p>
-                                        <p class="text-[9px] font-black text-blue-500 uppercase tracking-widest">{{ auth()->user()->role }}</p>
+                                    <div class="flex flex-col items-end text-right leading-none">
+                                        <p class="text-[9px] sm:text-xs font-black text-slate-900 mb-0.5 truncate max-w-[70px] sm:max-w-[200px]">{{ auth()->user()->name }}</p>
+                                        <p class="text-[7px] sm:text-[9px] font-black text-blue-500 uppercase tracking-widest">{{ auth()->user()->role }}</p>
                                     </div>
-                                    <a href="{{ route('profile.edit') }}" title="Pengaturan Profil" class="group relative">
-                                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-slate-900 overflow-hidden flex items-center justify-center text-xs font-black text-white shadow-xl transition-all group-hover:scale-110 group-hover:ring-4 group-hover:ring-blue-500/20">
+                                    <a href="{{ route('profile.edit') }}" class="group relative">
+                                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-slate-900 overflow-hidden flex items-center justify-center text-xs font-black text-white shadow-xl transition-all group-hover:scale-110">
                                             @if(auth()->user()->photo_path)
                                                 <img src="{{ asset('storage/' . auth()->user()->photo_path) }}?t={{ time() }}" class="w-full h-full object-cover">
                                             @else
                                                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                                             @endif
                                         </div>
-                                        <div class="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center text-[8px] text-white animate-pulse"></div>
-                                    </a>
-                                @else
-                                    <a href="{{ route('login') }}" class="text-[10px] sm:text-xs font-black text-blue-600 uppercase tracking-widest hover:text-blue-700 transition-colors">
-                                        Login 🔑
+                                        <div class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full animate-pulse sm:w-3 sm:h-3"></div>
                                     </a>
                                 @endauth
                             </div>

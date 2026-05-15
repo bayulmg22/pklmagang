@@ -47,55 +47,71 @@
                     </div>
                 @endif
 
-                <form action="http://192.168.1.9:8000/absensi/{{ $user->id }}" method="POST" class="space-y-8">
+                @if($attendance && $attendance->status === 'sakit')
+                    <div class="text-center py-10 bg-rose-50 rounded-[2rem] border-2 border-dashed border-rose-200 mb-8">
+                        <div class="text-4xl mb-4">💊</div>
+                        <h4 class="font-black text-rose-800 uppercase tracking-widest text-sm">Status: Sakit</h4>
+                        <p class="text-[10px] text-rose-400 font-bold mt-2 leading-relaxed px-6">Anda tercatat sakit. Semoga lekas sembuh!</p>
+                    </div>
+                @endif
+
+                <form action="http://192.168.1.9:8000/absensi/{{ $user->id }}" method="POST" class="space-y-6">
                     @csrf
                     
-                    @if(!$attendance || ($attendance && !$attendance->check_out_time))
-                        <div class="grid grid-cols-3 gap-4">
-                            @foreach(['hadir' => '🎯', 'izin' => '📝', 'sakit' => '💊'] as $status => $emoji)
-                                <label class="cursor-pointer group">
-                                    <input type="radio" name="status" value="{{ $status }}" class="hidden peer" {{ ($attendance && $attendance->status == $status) ? 'checked' : ($status == 'hadir' ? 'checked' : '') }}>
-                                    <div class="p-4 rounded-3xl border-2 border-slate-50 bg-slate-50 text-center transition-all peer-checked:border-blue-600 peer-checked:bg-white peer-checked:shadow-xl peer-checked:shadow-blue-600/10 group-hover:bg-white">
-                                        <div class="text-2xl mb-1">{{ $emoji }}</div>
-                                        <div class="text-[10px] font-black uppercase text-slate-500 peer-checked:text-blue-600 tracking-tighter">{{ $status }}</div>
-                                    </div>
-                                </label>
-                            @endforeach
-                        </div>
-
-                        @php
-                            $isLate = now()->hour >= 9 && now()->hour < 15;
-                        @endphp
-
-                        @if($isLate && (!$attendance || ($attendance && $attendance->status == 'hadir')))
-                            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 space-y-3">
-                                <div class="flex items-center gap-2 text-amber-700">
-                                    <span class="text-sm">⏰</span>
-                                    <span class="text-[10px] font-black uppercase tracking-widest">Peringatan Terlambat</span>
+                    <!-- Always allow status changes -->
+                    <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 ml-1">Pilih Status Baru</div>
+                    <div class="grid grid-cols-3 gap-4">
+                        @foreach(['hadir' => '🎯', 'izin' => '📝', 'sakit' => '💊'] as $status => $emoji)
+                            <label class="cursor-pointer group">
+                                <input type="radio" name="status" value="{{ $status }}" class="hidden peer" {{ $status == 'hadir' ? 'checked' : '' }}>
+                                <div class="p-4 rounded-3xl border-2 border-slate-50 bg-slate-50 text-center transition-all peer-checked:border-blue-600 peer-checked:bg-white peer-checked:shadow-xl peer-checked:shadow-blue-600/10 group-hover:bg-white">
+                                    <div class="text-2xl mb-1">{{ $emoji }}</div>
+                                    <div class="text-[10px] font-black uppercase text-slate-500 peer-checked:text-blue-600 tracking-tighter">{{ $status }}</div>
                                 </div>
-                                <p class="text-[10px] text-amber-600 font-bold leading-relaxed">Saat ini sudah melewati jam 09:00. Harap masukkan alasan keterlambatan Anda di bawah ini.</p>
-                                <textarea name="keterangan" rows="3" class="w-full bg-white border-0 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-amber-500 outline-none shadow-sm" placeholder="Contoh: Terjebak macet, ban bocor, dsb..."></textarea>
-                            </div>
-                        @else
-                            <div id="notesField" class="hidden">
-                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Keterangan (Opsional)</label>
-                                <textarea name="keterangan" rows="3" class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl px-5 py-4 text-sm font-bold text-slate-700 focus:bg-white focus:border-blue-600 outline-none transition-all resize-none shadow-inner" placeholder="Tambahkan catatan jika diperlukan..."></textarea>
-                            </div>
-                        @endif
+                            </label>
+                        @endforeach
+                    </div>
 
-                        <button type="submit" class="w-full bg-slate-900 text-white font-black py-5 rounded-[1.5rem] shadow-xl shadow-slate-900/20 hover:bg-blue-600 transition-all uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3">
-                            @if($attendance)
-                                <span>🚪 ABSEN PULANG</span>
-                            @else
-                                <span>✅ KONFIRMASI HADIR</span>
-                            @endif
-                        </button>
-                    @else
-                        <div class="text-center py-10 bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-200">
-                            <div class="text-4xl mb-4">🏠</div>
-                            <h4 class="font-black text-slate-800 uppercase tracking-widest text-sm">Selesai Untuk Hari Ini</h4>
-                            <p class="text-[10px] text-slate-400 font-bold mt-2">Anda sudah melakukan absen masuk dan pulang.</p>
+                    @php
+                        $isLate = now()->hour >= 9 && now()->hour < 15;
+                    @endphp
+
+                    @if($isLate)
+                        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-center gap-3">
+                            <span class="text-xl">⏰</span>
+                            <div>
+                                <div class="text-[10px] font-black uppercase text-amber-700 tracking-widest">Terlambat Otomatis</div>
+                                <p class="text-[9px] text-amber-600 font-bold">Waktu sudah melewati jam 09:00.</p>
+                            </div>
                         </div>
+                    @endif
+
+                    <div id="notesField" class="hidden">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Keterangan Tambahan</label>
+                        <textarea name="keterangan" rows="2" class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl px-5 py-4 text-sm font-bold text-slate-700 focus:bg-white focus:border-blue-600 outline-none transition-all resize-none shadow-inner" placeholder="Contoh: Ada urusan keluarga..."></textarea>
+                    </div>
+
+                    <button type="submit" name="action" value="check_in" class="w-full bg-slate-900 text-white font-black py-5 rounded-[1.5rem] shadow-xl shadow-slate-900/20 hover:bg-blue-600 transition-all uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3">
+                        <span>🚀 SIMPAN PERUBAHAN STATUS</span>
+                    </button>
+
+                    <!-- Separate Check-out Button (Only if Hadir & Not Checked Out) -->
+                    @php
+                        $hasActiveHadir = \App\Models\Attendance::where('user_id', $user->id)
+                            ->where('date', now()->toDateString())
+                            ->where('status', 'hadir')
+                            ->whereNull('check_out_time')
+                            ->exists();
+                    @endphp
+
+                    @if($hasActiveHadir)
+                        <div class="relative py-4">
+                            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-100"></div></div>
+                            <div class="relative flex justify-center text-[8px] font-black text-slate-300 uppercase tracking-[0.3em] bg-white px-4">Atau Selesaikan Hari</div>
+                        </div>
+                        <button type="submit" name="action" value="check_out" class="w-full bg-rose-500 text-white font-black py-5 rounded-[1.5rem] shadow-xl shadow-rose-900/20 hover:bg-rose-600 transition-all uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3">
+                            <span>🚪 ABSEN PULANG</span>
+                        </button>
                     @endif
                 </form>
 
@@ -114,9 +130,7 @@
                     if (e.target.value !== 'hadir') {
                         notesField.classList.remove('hidden');
                     } else {
-                        @if(!$isLate)
-                            notesField.classList.add('hidden');
-                        @endif
+                        notesField.classList.add('hidden');
                     }
                 }
             });
