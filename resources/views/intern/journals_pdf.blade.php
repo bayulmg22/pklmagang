@@ -57,8 +57,8 @@
             <tr>
                 <td class="info-label">Asal Instansi</td>
                 <td class="info-value">: {{ $user->school }}</td>
-                <td class="info-label" style="text-align: right;">Total Aktivitas</td>
-                <td class="info-value">: {{ count($journals) }} Hari</td>
+                <td class="info-label" style="text-align: right;">Total Hari Aktif</td>
+                <td class="info-value">: {{ $journals->count() }} Hari</td>
             </tr>
         </table>
     </div>
@@ -72,11 +72,22 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($journals as $index => $journal)
+            @php $no = 1; @endphp
+            @foreach($journals as $date => $group)
             <tr>
-                <td style="text-align: center;">{{ $index + 1 }}</td>
-                <td style="text-align: center; font-weight: bold;">{{ \Carbon\Carbon::parse($journal->date)->translatedFormat('l, d M Y') }}</td>
-                <td style="white-space: pre-wrap;">{{ $journal->activity }}</td>
+                <td style="text-align: center;">{{ $no++ }}</td>
+                <td style="text-align: center; font-weight: bold; font-size: 11px;">
+                    {{ \Carbon\Carbon::parse($date)->translatedFormat('l, d F Y') }}
+                </td>
+                <td style="white-space: pre-wrap;">
+                    @if($group->count() > 1)
+                        @foreach($group as $item)
+                            <div style="margin-bottom: 5px;">{{ $loop->iteration }}. {{ $item->activity }}</div>
+                        @endforeach
+                    @else
+                        {{ $group->first()->activity }}
+                    @endif
+                </td>
             </tr>
             @endforeach
         </tbody>

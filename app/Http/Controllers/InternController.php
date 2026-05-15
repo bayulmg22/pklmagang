@@ -184,7 +184,12 @@ class InternController extends Controller
     public function printAttendance()
     {
         $user = auth()->user();
-        $attendances = \App\Models\Attendance::where('user_id', $user->id)->orderBy('date', 'asc')->get();
+        // Group by date to handle potential multiple records on same day
+        $attendances = \App\Models\Attendance::where('user_id', $user->id)
+                        ->orderBy('date', 'asc')
+                        ->get()
+                        ->groupBy('date');
+
         $pdf = Pdf::loadView('intern.attendance_pdf', compact('attendances', 'user'));
         return $pdf->stream('Laporan_Absensi_' . $user->nim . '.pdf');
     }
@@ -192,7 +197,12 @@ class InternController extends Controller
     public function printJournals()
     {
         $user = auth()->user();
-        $journals = \App\Models\Journal::where('user_id', $user->id)->orderBy('date', 'asc')->get();
+        // Group by date to combine multiple activities on the same day
+        $journals = \App\Models\Journal::where('user_id', $user->id)
+                        ->orderBy('date', 'asc')
+                        ->get()
+                        ->groupBy('date');
+
         $pdf = Pdf::loadView('intern.journals_pdf', compact('journals', 'user'));
         return $pdf->stream('Laporan_Jurnal_' . $user->nim . '.pdf');
     }

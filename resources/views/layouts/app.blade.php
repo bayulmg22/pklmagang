@@ -133,11 +133,11 @@
             <!-- Main Content -->
             <div class="flex-1 flex flex-col min-w-0">
                 
-                <!-- Responsive Header -->
+                <!-- Optimized Responsive Header -->
                 <header class="glass-header sticky top-0 z-30">
-                    <div class="px-4 sm:px-6 py-2.5 flex justify-between items-center">
+                    <div class="px-4 sm:px-6 py-2 flex justify-between items-center">
                         <!-- Left Side -->
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
                             <!-- Mobile Menu Toggle -->
                             <button @click="mobileMenuOpen = true" class="lg:hidden p-2 -ml-2 rounded-xl hover:bg-slate-100 text-slate-600 transition-colors">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
@@ -152,19 +152,13 @@
                                     <span class="text-xs font-black text-slate-800 uppercase tracking-tight">SIMASOS</span>
                                     <span class="text-[8px] font-bold text-blue-500 uppercase tracking-widest mt-0.5">Sistem Magang</span>
                                 </div>
-                                <div class="h-6 w-px bg-slate-200 mx-2"></div>
-                                @isset($header)
-                                    <div class="text-sm font-black text-slate-800 uppercase tracking-widest truncate max-w-[300px]">
-                                        {{ $header }}
-                                    </div>
-                                @endisset
                             </div>
                         </div>
 
                         <!-- Right Side -->
-                        <div class="flex items-center gap-3 sm:gap-6">
+                        <div class="flex items-center gap-2 sm:gap-6 min-w-0">
                             <!-- Desktop Date/Time -->
-                            <div class="hidden md:flex flex-col items-end leading-none">
+                            <div class="hidden md:flex flex-col items-end leading-none flex-shrink-0">
                                 <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">DATA SISTEM</span>
                                 <span class="text-xs font-black text-slate-800">
                                     {{ \Carbon\Carbon::now('Asia/Jakarta')->translatedFormat('l, d F Y') }}
@@ -174,13 +168,15 @@
                             <div class="h-8 w-px bg-slate-200 hidden md:block"></div>
 
                             <!-- User Profile -->
-                            <div class="flex items-center gap-2 sm:gap-3">
+                            <div class="flex items-center gap-2 sm:gap-3 min-w-0">
                                 @auth
-                                    <div class="flex flex-col items-end text-right leading-none">
-                                        <p class="text-[9px] sm:text-xs font-black text-slate-900 mb-0.5 truncate max-w-[70px] sm:max-w-[200px]">{{ auth()->user()->name }}</p>
-                                        <p class="text-[7px] sm:text-[9px] font-black text-blue-500 uppercase tracking-widest">{{ auth()->user()->role }}</p>
+                                    <div class="flex flex-col items-end text-right leading-none min-w-0">
+                                        <p class="text-[10px] sm:text-xs font-black text-slate-900 mb-0.5 truncate sm:max-w-[300px]">{{ auth()->user()->name }}</p>
+                                        <p class="text-[8px] sm:text-[9px] font-black text-blue-500 uppercase tracking-widest truncate">
+                                            {{ auth()->user()->role === 'intern' ? (auth()->user()->nim ?? 'PESERTA') : 'ADMIN' }}
+                                        </p>
                                     </div>
-                                    <a href="{{ route('profile.edit') }}" class="group relative">
+                                    <a href="{{ route('profile.edit') }}" class="flex-shrink-0 group relative">
                                         <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-slate-900 overflow-hidden flex items-center justify-center text-xs font-black text-white shadow-xl transition-all group-hover:scale-110">
                                             @if(auth()->user()->photo_path)
                                                 <img src="{{ asset('storage/' . auth()->user()->photo_path) }}?t={{ time() }}" class="w-full h-full object-cover">
@@ -198,6 +194,16 @@
 
                 <!-- Page Content -->
                 <main class="p-5 max-w-[1600px] mx-auto w-full">
+                    @isset($header)
+                        <div class="mb-6 animate-fade">
+                            <div class="flex items-center gap-2 mb-1">
+                                <div class="w-1 h-4 bg-blue-600 rounded-full"></div>
+                                <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Halaman Menu</h2>
+                            </div>
+                            <h1 class="text-xl sm:text-2xl font-black text-slate-800 uppercase tracking-tight">{{ $header }}</h1>
+                        </div>
+                    @endisset
+
                     {{ $slot }}
                 </main>
             </div>

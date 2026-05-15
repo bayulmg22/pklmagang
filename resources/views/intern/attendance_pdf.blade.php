@@ -58,8 +58,8 @@
             <tr>
                 <td class="info-label">Asal Instansi</td>
                 <td class="info-value">: {{ $user->school }}</td>
-                <td class="info-label" style="text-align: right;">Total Kehadiran</td>
-                <td class="info-value">: {{ count($attendances) }} Hari</td>
+                <td class="info-label" style="text-align: right;">Total Hari Hadir</td>
+                <td class="info-value">: {{ $attendances->count() }} Hari</td>
             </tr>
         </table>
     </div>
@@ -75,14 +75,24 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($attendances as $index => $att)
+            @php $no = 1; @endphp
+            @foreach($attendances as $date => $group)
+            @php $first = $group->first(); @endphp
             <tr>
-                <td>{{ $index + 1 }}</td>
-                <td style="text-align: left; padding-left: 15px;">{{ \Carbon\Carbon::parse($att->date)->translatedFormat('l, d M Y') }}</td>
-                <td style="font-weight: bold;">{{ $att->check_in_time ?? '—' }}</td>
-                <td style="font-weight: bold;">{{ $att->check_out_time ?? '—' }}</td>
+                <td>{{ $no++ }}</td>
+                <td style="text-align: left; padding-left: 15px; font-weight: bold;">
+                    {{ \Carbon\Carbon::parse($date)->translatedFormat('l, d F Y') }}
+                </td>
+                <td style="font-weight: bold;">{{ $first->check_in_time ?? '—' }}</td>
+                <td style="font-weight: bold;">{{ $first->check_out_time ?? '—' }}</td>
                 <td>
-                    <span class="status-badge">{{ $att->status }}</span>
+                    @if($group->count() > 1)
+                        @foreach($group as $att)
+                            <div class="status-badge">{{ $att->status }}</div>
+                        @endforeach
+                    @else
+                        <span class="status-badge">{{ $first->status }}</span>
+                    @endif
                 </td>
             </tr>
             @endforeach
