@@ -47,45 +47,51 @@
     </div>
     
     <div class="info-section">
-        <table>
+        <table style="width: auto; min-width: 400px;">
             <tr>
-                <td class="info-label">Nama Lengkap</td>
+                <td class="info-label" style="width: 120px;">Nama Lengkap</td>
                 <td class="info-value">: {{ $user->name }}</td>
-                <td class="info-label" style="text-align: right;">NIM / NISN</td>
-                <td class="info-value" style="width: 150px;">: {{ $user->nim }}</td>
+            </tr>
+            <tr>
+                <td class="info-label">NIM / NISN</td>
+                <td class="info-value">: {{ $user->nim }}</td>
             </tr>
             <tr>
                 <td class="info-label">Asal Instansi</td>
                 <td class="info-value">: {{ $user->school }}</td>
-                <td class="info-label" style="text-align: right;">Total Hari Aktif</td>
+            </tr>
+            <tr>
+                <td class="info-label">Total Hari Aktif</td>
                 <td class="info-value">: {{ $journals->count() }} Hari</td>
             </tr>
         </table>
     </div>
 
-    <table class="table">
+    <table class="table" style="width: 100%; table-layout: fixed;">
         <thead>
             <tr>
                 <th style="width: 40px;">No</th>
                 <th style="width: 150px;">Hari / Tanggal</th>
-                <th>Deskripsi Aktivitas / Kegiatan</th>
+                <th style="text-align: left; width: auto;">Deskripsi Aktivitas / Kegiatan</th>
             </tr>
         </thead>
         <tbody>
             @php $no = 1; @endphp
             @foreach($journals as $date => $group)
             <tr>
-                <td style="text-align: center;">{{ $no++ }}</td>
-                <td style="text-align: center; font-weight: bold; font-size: 11px;">
+                <td style="text-align: center; vertical-align: top;">{{ $no++ }}</td>
+                <td style="text-align: center; font-weight: bold; font-size: 11px; vertical-align: top;">
                     {{ \Carbon\Carbon::parse($date)->translatedFormat('l, d F Y') }}
                 </td>
-                <td style="white-space: pre-wrap;">
+                <td style="text-align: justify; line-height: 1.5; vertical-align: top;">
                     @if($group->count() > 1)
                         @foreach($group as $item)
-                            <div style="margin-bottom: 5px;">{{ $loop->iteration }}. {{ $item->activity }}</div>
+                            <div style="margin-bottom: 10px;">
+                                <strong>{{ $loop->iteration }}.</strong> {!! nl2br(e($item->activity)) !!}
+                            </div>
                         @endforeach
                     @else
-                        {{ $group->first()->activity }}
+                        {!! nl2br(e($group->first()->activity)) !!}
                     @endif
                 </td>
             </tr>

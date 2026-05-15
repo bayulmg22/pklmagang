@@ -48,27 +48,31 @@
     </div>
     
     <div class="info-section">
-        <table>
+        <table style="width: auto; min-width: 400px;">
             <tr>
-                <td class="info-label">Nama Lengkap</td>
+                <td class="info-label" style="width: 120px;">Nama Lengkap</td>
                 <td class="info-value">: {{ $user->name }}</td>
-                <td class="info-label" style="text-align: right;">NIM / NISN</td>
-                <td class="info-value" style="width: 150px;">: {{ $user->nim }}</td>
+            </tr>
+            <tr>
+                <td class="info-label">NIM / NISN</td>
+                <td class="info-value">: {{ $user->nim }}</td>
             </tr>
             <tr>
                 <td class="info-label">Asal Instansi</td>
                 <td class="info-value">: {{ $user->school }}</td>
-                <td class="info-label" style="text-align: right;">Total Hari Hadir</td>
+            </tr>
+            <tr>
+                <td class="info-label">Total Hari Hadir</td>
                 <td class="info-value">: {{ $attendances->count() }} Hari</td>
             </tr>
         </table>
     </div>
 
-    <table class="table">
+    <table class="table" style="width: 100%; table-layout: fixed;">
         <thead>
             <tr>
                 <th style="width: 40px;">No</th>
-                <th>Hari / Tanggal</th>
+                <th style="width: 150px;">Hari / Tanggal</th>
                 <th>Masuk</th>
                 <th>Pulang</th>
                 <th>Status Kehadiran</th>
