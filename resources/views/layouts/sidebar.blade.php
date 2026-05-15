@@ -1,20 +1,21 @@
-<div class="w-64 bg-[#1e293b] flex-shrink-0 flex flex-col min-h-screen sticky top-0 z-40 border-r border-slate-700">
+<div class="w-64 bg-gradient-to-b from-sky-100 to-emerald-100 flex-shrink-0 flex flex-col min-h-screen sticky top-0 z-40 border-r border-sky-200">
     <!-- Brand -->
-    <div class="h-24 flex items-center px-6 bg-[#0f172a] border-b border-slate-700">
+    <div class="h-24 flex items-center px-6 bg-white/50 border-b border-sky-200 backdrop-blur-sm">
         <div class="flex items-center gap-3">
-            <div class="bg-white p-1.5 rounded-lg shadow-sm">
+            <div class="bg-white p-1.5 rounded-lg shadow-sm border border-sky-100">
                 <img src="{{ asset('logo-dinsos.jpg') }}" class="h-10 w-auto" alt="Logo">
             </div>
             <div class="flex flex-col">
-                <span class="text-white font-black text-2xl tracking-tight leading-none">SIMASOS</span>
-                <span class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mt-1">KAB. LAMONGAN</span>
+                <span class="text-slate-900 font-black text-2xl tracking-tight leading-none">SIMASOS</span>
+                <span class="text-sky-600 text-[10px] font-black uppercase tracking-widest mt-1">KAB. LAMONGAN</span>
             </div>
         </div>
     </div>
 
     <!-- Nav -->
-    <div class="flex-1 px-4 py-6 space-y-8 overflow-y-auto custom-scrollbar bg-[#1e293b]">
+    <div class="flex-1 px-4 py-6 space-y-8 overflow-y-auto custom-scrollbar">
         @php
+            \Carbon\Carbon::setLocale('id');
             $role = auth()->user()->role;
             $adminMenus = [
                 'ADMINISTRASI' => [
@@ -42,11 +43,11 @@
 
         @foreach($menus as $label => $items)
             <div class="mb-6">
-                <p class="px-2 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">{{ $label }}</p>
+                <p class="px-2 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-3">{{ $label }}</p>
                 <div class="space-y-1">
                     @foreach($items as $item)
                         <a href="{{ route($item[0]) }}" 
-                           class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-[13px] font-bold transition-all {{ request()->routeIs($item[0]) ? 'bg-blue-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                           class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-[13px] font-bold transition-all {{ request()->routeIs($item[0]) ? 'bg-white text-sky-700 shadow-sm border border-sky-100' : 'text-slate-600 hover:bg-white/40 hover:text-sky-700' }}">
                             <span class="text-lg">{{ $item[1] }}</span>
                             {{ $item[2] }}
                         </a>
@@ -57,10 +58,10 @@
     </div>
 
     <!-- Footer -->
-    <div class="p-4 bg-[#0f172a] border-t border-slate-700">
+    <div class="p-4 bg-white/30 border-t border-sky-200">
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-2 text-xs font-black text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition-all shadow-md uppercase tracking-wider">
+            <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-2 text-xs font-black text-white bg-rose-500 hover:bg-rose-600 rounded-lg transition-all shadow-sm uppercase tracking-wider">
                 🚪 LOGOUT
             </button>
         </form>

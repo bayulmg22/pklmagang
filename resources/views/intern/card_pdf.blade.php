@@ -3,82 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        @page { margin: 0; size: 240pt 380pt; }
+        /* Standar ID Card Portrait - Sedikit di bawah ukuran A4 agar tidak lari ke 2 halaman */
+        @page { margin: 0; size: 280pt 420pt; }
         body {
             margin: 0;
             padding: 0;
             font-family: 'Helvetica', sans-serif;
             background-color: #ffffff;
-        }
-        .card-wrapper {
-            width: 240pt;
-            height: 380pt;
-            border: 1px solid #000;
-            position: relative;
+            width: 280pt;
+            height: 420pt;
             overflow: hidden;
-            background: #fff;
         }
-        .blue-header {
-            background-color: #1e3a8a;
+        .card-container {
+            width: 280pt;
+            height: 420pt;
+            position: relative;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+        }
+        .header {
+            background-color: #0f172a;
             color: #ffffff;
             text-align: center;
-            padding: 15pt 0;
+            padding: 15pt 5pt;
+            border-bottom: 2pt solid #2563eb;
         }
-        .logo-box {
-            background: #fff;
+        .header img {
+            width: 35pt;
+            background: white;
             padding: 2pt;
-            display: inline-block;
             border-radius: 3pt;
             margin-bottom: 5pt;
         }
-        .logo-img {
-            height: 30pt;
-            width: auto;
-        }
-        .title-top {
+        .header-title {
             font-size: 14pt;
             font-weight: bold;
             margin: 0;
+            line-height: 1;
         }
-        .title-bottom {
+        .header-sub {
             font-size: 8pt;
             font-weight: bold;
-            color: #93c5fd;
-            letter-spacing: 1pt;
+            color: #60a5fa;
+            letter-spacing: 0.5pt;
+            margin-top: 2pt;
         }
-        .photo-section {
+        .content {
             text-align: center;
-            margin-top: 20pt;
+            padding-top: 15pt;
+        }
+        .photo-frame {
+            width: 110pt;
+            height: 145pt;
+            border: 3pt solid #f1f5f9;
+            display: inline-block;
+            background-color: #f8fafc;
+            overflow: hidden;
         }
         .photo-img {
-            width: 100pt;
-            height: 130pt;
-            border: 3pt solid #eee;
-            background-color: #f3f4f6;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-        .info-section {
-            text-align: center;
+        .user-info {
             margin-top: 15pt;
             padding: 0 10pt;
         }
-        .name-txt {
-            font-size: 15pt;
+        .user-name {
+            font-size: 16pt;
             font-weight: bold;
-            color: #111;
+            color: #000;
             text-transform: uppercase;
+            line-height: 1.1;
         }
-        .nim-txt {
-            font-size: 11pt;
-            color: #1d4ed8;
+        .user-nim {
+            font-size: 12pt;
             font-weight: bold;
-            margin-top: 2pt;
+            color: #2563eb;
+            margin-top: 4pt;
         }
-        .school-txt {
+        .user-school {
             font-size: 9pt;
-            color: #444;
+            color: #64748b;
             font-weight: bold;
-            margin-top: 8pt;
             text-transform: uppercase;
+            margin-top: 8pt;
         }
         .qr-section {
             position: absolute;
@@ -86,54 +95,50 @@
             width: 100%;
             text-align: center;
         }
-        .qr-img {
-            width: 60pt;
-            height: 60pt;
+        .qr-code {
+            width: 55pt;
+            height: 55pt;
         }
-        .footer-strip {
+        .footer-line {
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 12pt;
-            background: #111;
+            height: 10pt;
+            background-color: #0f172a;
         }
     </style>
 </head>
 <body>
-    <div class="card-wrapper">
-        <div class="blue-header">
-            <div class="logo-box">
-                <img src="{{ public_path('logo-dinsos.jpg') }}" class="logo-img">
+    @php \Carbon\Carbon::setLocale('id'); @endphp
+    <div class="card-container">
+        <div class="header">
+            <img src="{{ public_path('logo-dinsos.jpg') }}">
+            <div class="header-title">DINAS SOSIAL</div>
+            <div class="header-sub">KABUPATEN LAMONGAN</div>
+        </div>
+
+        <div class="content">
+            <div class="photo-frame">
+                @if($photoBase64)
+                    <img src="{{ $photoBase64 }}" class="photo-img">
+                @else
+                    <div style="padding-top: 60pt; font-size: 7pt; color: #ccc;">FOTO PESERTA</div>
+                @endif
             </div>
-            <div class="title-top">DINAS SOSIAL</div>
-            <div class="title-bottom">KABUPATEN LAMONGAN</div>
-        </div>
 
-        <div class="photo-section">
-            @php
-                $photo = $user->photo_path && file_exists(public_path('storage/' . $user->photo_path)) 
-                    ? public_path('storage/' . $user->photo_path) 
-                    : null;
-            @endphp
-            @if($photo)
-                <img src="{{ $photo }}" class="photo-img">
-            @else
-                <div class="photo-img" style="display:inline-block; line-height:130pt; color:#ccc;">NO PHOTO</div>
-            @endif
-        </div>
-
-        <div class="info-section">
-            <div class="name-txt">{{ $user->name }}</div>
-            <div class="nim-txt">{{ $user->nim }}</div>
-            <div class="school-txt">{{ $user->school }}</div>
-            <div style="font-size: 7pt; color: #999; margin-top: 5pt; font-weight: bold;">IDENTITAS PESERTA MAGANG</div>
+            <div class="user-info">
+                <div class="user-name">{{ $user->name }}</div>
+                <div class="user-nim">{{ $user->nim }}</div>
+                <div class="user-school">{{ $user->school }}</div>
+            </div>
         </div>
 
         <div class="qr-section">
-            <img src="data:image/svg+xml;base64,{{ $qrCode }}" class="qr-img">
+            <img src="data:image/svg+xml;base64,{{ $qrCode }}" class="qr-code">
+            <div style="font-size: 5pt; color: #999; margin-top: 4pt; font-weight: bold;">DICETAK: {{ now()->translatedFormat('l, d F Y') }}</div>
         </div>
 
-        <div class="footer-strip"></div>
+        <div class="footer-line"></div>
     </div>
 </body>
 </html>

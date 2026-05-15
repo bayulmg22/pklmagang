@@ -20,109 +20,107 @@
             
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left">
-                    <thead class="text-[11px] text-slate-500 uppercase tracking-widest bg-slate-50 border-b border-slate-100">
+                    <thead class="text-[11px] text-slate-400 uppercase tracking-[0.2em] bg-slate-50 border-b border-slate-100">
                         <tr>
-                            <th class="px-6 py-4 font-bold">Nama Peserta</th>
-                            <th class="px-6 py-4 font-bold text-center">Status</th>
-                            <th class="px-6 py-4 font-bold text-center">Nilai Rata-rata</th>
-                            <th class="px-6 py-4 font-bold text-center">Predikat</th>
-                            <th class="px-6 py-4 font-bold text-center">Aksi</th>
+                            <th class="px-6 py-4 font-black">Peserta Magang</th>
+                            <th class="px-6 py-4 font-black text-center">Status</th>
+                            <th class="px-6 py-4 font-black text-center">Nilai Rata-Rata</th>
+                            <th class="px-6 py-4 font-black text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
+                    <tbody class="divide-y divide-slate-100 bg-white">
                         @forelse ($interns as $intern)
-                            <tr class="hover:bg-slate-50/50 transition-colors">
+                            <tr class="hover:bg-slate-50 transition-all">
                                 <td class="px-6 py-4">
-                                    <div class="font-bold text-slate-800">{{ $intern->name }}</div>
-                                    <div class="text-[10px] text-slate-400 font-medium">{{ $intern->nim }}</div>
+                                    <div class="font-black text-slate-800 text-sm">{{ $intern->name }}</div>
+                                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{{ $intern->nim }} — {{ $intern->school }}</div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     @if($intern->status == 'finished')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[9px] font-black bg-indigo-50 text-indigo-700 border border-indigo-200 uppercase">Selesai Dinilai</span>
+                                        <span class="text-[10px] font-black text-emerald-600 uppercase">Selesai</span>
                                     @else
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[9px] font-black bg-blue-50 text-blue-700 border border-blue-200 uppercase">Aktif</span>
+                                        <span class="text-[10px] font-black text-sky-600 uppercase">Aktif</span>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 text-center">
-                                    <span class="text-sm font-black text-slate-800">
-                                        {{ $intern->evaluation ? number_format($intern->evaluation->average, 1) : '—' }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-center">
                                     @if($intern->evaluation)
-                                        <span class="text-[10px] font-bold text-slate-600 italic">{{ $intern->evaluation->predicate }}</span>
+                                        <span class="text-sm font-black text-slate-900">{{ number_format($intern->evaluation->average, 1) }}</span>
+                                        <span class="text-[9px] font-black text-slate-400 ml-1">({{ $intern->evaluation->predicate }})</span>
                                     @else
-                                        <span class="text-slate-300 text-xs">—</span>
+                                        <span class="text-slate-300 text-xs italic">N/A</span>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex justify-center">
                                         <button onclick="document.getElementById('modal-{{ $intern->id }}').classList.remove('hidden')" 
-                                            class="px-4 py-1.5 bg-slate-900 text-white text-[10px] font-bold rounded-lg hover:bg-slate-800 transition shadow-sm">
-                                            {{ $intern->evaluation ? 'EDIT NILAI' : 'BERI NILAI' }}
+                                            class="px-4 py-2 {{ $intern->evaluation ? 'bg-slate-100 text-slate-600' : 'bg-slate-900 text-white' }} text-[10px] font-black rounded-lg transition-all uppercase tracking-widest">
+                                            {{ $intern->evaluation ? 'Edit Nilai' : 'Beri Nilai' }}
                                         </button>
                                     </div>
                                 </td>
                             </tr>
 
-                            <!-- Modal Design -->
+                            <!-- Modal: Compact Scoring Form -->
                             <div id="modal-{{ $intern->id }}" class="hidden fixed inset-0 z-50 overflow-y-auto">
-                                <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
-                                    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="document.getElementById('modal-{{ $intern->id }}').classList.add('hidden')"></div>
+                                <div class="flex items-center justify-center min-h-screen p-4">
+                                    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="document.getElementById('modal-{{ $intern->id }}').classList.add('hidden')"></div>
                                     
-                                    <div class="relative inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-slate-200">
-                                        <form action="{{ route('admin.evaluations.store', $intern) }}" method="POST">
+                                    <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-xl overflow-hidden">
+                                        <div class="bg-slate-900 px-6 py-4 text-white flex justify-between items-center">
+                                            <h3 class="font-black text-sm uppercase tracking-widest">Input Penilaian Akhir</h3>
+                                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ $intern->name }}</span>
+                                        </div>
+
+                                        <form action="{{ route('admin.evaluations.store', $intern) }}" method="POST" class="p-6">
                                             @csrf
-                                            <div class="bg-white p-6">
-                                                <div class="mb-6">
-                                                    <h3 class="text-lg font-bold text-slate-800">Input Penilaian Magang</h3>
-                                                    <p class="text-xs text-slate-500">Peserta: <span class="font-bold text-blue-600">{{ $intern->name }}</span> ({{ $intern->nim }})</p>
+                                            <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+                                                @php
+                                                    $fields = [
+                                                        ['kedisiplinan', 'Kedisiplinan'],
+                                                        ['tanggung_jawab', 'Tanggung Jawab'],
+                                                        ['kerja_sama', 'Kerja Sama'],
+                                                        ['kreativitas', 'Kreativitas'],
+                                                        ['kemampuan_beradaptasi', 'Adaptasi'],
+                                                        ['kualitas_hasil_kerja', 'Kualitas Kerja'],
+                                                    ];
+                                                @endphp
+
+                                                @foreach($fields as $field)
+                                                    <div class="space-y-1">
+                                                        <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block">{{ $field[1] }} (0-100)</label>
+                                                        <input type="number" name="{{ $field[0] }}" value="{{ $intern->evaluation->{$field[0]} ?? '' }}" min="0" max="100" 
+                                                            class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-black focus:border-slate-900 outline-none transition-all" required>
+                                                    </div>
+                                                @endforeach
+
+                                                <div class="space-y-1">
+                                                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Laporan Magang</label>
+                                                    <input type="number" name="penyusunan_laporan" value="{{ $intern->evaluation->penyusunan_laporan ?? '' }}" min="0" max="100" 
+                                                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-black focus:border-slate-900 outline-none transition-all" required>
                                                 </div>
 
-                                                <div class="grid grid-cols-2 gap-4">
-                                                    <div class="col-span-1">
-                                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Kedisiplinan</label>
-                                                        <input type="number" name="kedisiplinan" value="{{ $intern->evaluation->kedisiplinan ?? '' }}" min="0" max="100" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all" required>
-                                                    </div>
-                                                    <div class="col-span-1">
-                                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Tanggung Jawab</label>
-                                                        <input type="number" name="tanggung_jawab" value="{{ $intern->evaluation->tanggung_jawab ?? '' }}" min="0" max="100" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all" required>
-                                                    </div>
-                                                    <div class="col-span-1">
-                                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Kerja Sama Tim</label>
-                                                        <input type="number" name="kerja_sama" value="{{ $intern->evaluation->kerja_sama ?? '' }}" min="0" max="100" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all" required>
-                                                    </div>
-                                                    <div class="col-span-1">
-                                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Kreativitas</label>
-                                                        <input type="number" name="kreativitas" value="{{ $intern->evaluation->kreativitas ?? '' }}" min="0" max="100" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all" required>
-                                                    </div>
-                                                    <div class="col-span-1">
-                                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Adaptasi</label>
-                                                        <input type="number" name="kemampuan_beradaptasi" value="{{ $intern->evaluation->kemampuan_beradaptasi ?? '' }}" min="0" max="100" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all" required>
-                                                    </div>
-                                                    <div class="col-span-1">
-                                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Kualitas Hasil</label>
-                                                        <input type="number" name="kualitas_hasil_kerja" value="{{ $intern->evaluation->kualitas_hasil_kerja ?? '' }}" min="0" max="100" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all" required>
-                                                    </div>
-                                                    <div class="col-span-2">
-                                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Penyusunan Laporan</label>
-                                                        <input type="number" name="penyusunan_laporan" value="{{ $intern->evaluation->penyusunan_laporan ?? '' }}" min="0" max="100" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all" required>
-                                                    </div>
-                                                    <div class="col-span-2">
-                                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Tanggal Selesai Magang</label>
-                                                        <input type="date" name="finished_at" value="{{ $intern->evaluation->finished_at ?? date('Y-m-d') }}" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all" required>
-                                                    </div>
-                                                    <div class="col-span-2">
-                                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Komentar / Pesan Motivasi</label>
-                                                        <textarea name="comments" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all" placeholder="Tuliskan masukan untuk peserta..." required>{{ $intern->evaluation->comments ?? '' }}</textarea>
-                                                    </div>
+                                                <div class="space-y-1">
+                                                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Tanggal Selesai</label>
+                                                    <input type="date" name="finished_at" value="{{ $intern->evaluation->finished_at ?? date('Y-m-d') }}" 
+                                                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-black focus:border-slate-900 outline-none transition-all" required>
+                                                </div>
+
+                                                <div class="col-span-2 space-y-1">
+                                                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Komentar / Catatan Akhir</label>
+                                                    <textarea name="comments" rows="2" 
+                                                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold focus:border-slate-900 outline-none transition-all resize-none" required>{{ $intern->evaluation->comments ?? '' }}</textarea>
                                                 </div>
                                             </div>
-                                            <div class="bg-slate-50 px-6 py-4 flex flex-row-reverse gap-2">
-                                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition shadow-sm">SIMPAN PENILAIAN</button>
-                                                <button type="button" onclick="document.getElementById('modal-{{ $intern->id }}').classList.add('hidden')" class="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-xs font-bold rounded-lg hover:bg-slate-100 transition">BATAL</button>
+
+                                            <div class="mt-6 flex gap-2">
+                                                <button type="submit" class="flex-1 bg-slate-900 text-white font-black py-3 rounded-xl hover:bg-slate-800 transition-all uppercase tracking-widest text-[10px]">Simpan Penilaian</button>
+                                                <button type="button" onclick="document.getElementById('modal-{{ $intern->id }}').classList.add('hidden')" 
+                                                    class="px-6 bg-slate-100 text-slate-500 font-black py-3 rounded-xl hover:bg-slate-200 transition-all uppercase tracking-widest text-[10px]">Batal</button>
                                             </div>
                                         </form>
+                                    </div>
+                                </div>
+                            </div>
                                     </div>
                                 </div>
                             </div>

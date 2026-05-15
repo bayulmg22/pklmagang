@@ -11,6 +11,19 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        animation: {
+                            'fade-in': 'fadeIn 0.5s ease-out forwards',
+                            'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        }
+                    }
+                }
+            }
+        </script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <style>
@@ -73,11 +86,10 @@
                         <div class="flex items-center gap-4">
                             <div class="flex items-center gap-2">
                                 <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white text-xs font-black shadow-lg">S</div>
-                                <span class="text-sm font-black text-slate-900 tracking-tight">SIMASOS PORTAL</span>
                             </div>
                             <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
                             @isset($header)
-                                <div class="text-sm font-bold text-blue-600 uppercase tracking-widest hidden md:block">
+                                <div class="text-sm font-black text-slate-800 uppercase tracking-widest hidden md:block">
                                     {{ $header }}
                                 </div>
                             @endisset
@@ -100,10 +112,14 @@
                                     <p class="text-[9px] font-black text-blue-500 uppercase tracking-widest">{{ auth()->user()->role }}</p>
                                 </div>
                                 <a href="{{ route('profile.edit') }}" title="Pengaturan Profil" class="group relative">
-                                    <div class="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center text-xs font-black text-white shadow-xl transition-all group-hover:scale-110 group-hover:bg-blue-600">
-                                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                    <div class="w-10 h-10 rounded-xl bg-slate-900 overflow-hidden flex items-center justify-center text-xs font-black text-white shadow-xl transition-all group-hover:scale-110 group-hover:ring-4 group-hover:ring-blue-500/20">
+                                        @if(auth()->user()->photo_path)
+                                            <img src="{{ asset('storage/' . auth()->user()->photo_path) }}?t={{ time() }}" class="w-full h-full object-cover">
+                                        @else
+                                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                        @endif
                                     </div>
-                                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center text-[8px] text-white animate-pulse">✓</div>
+                                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center text-[8px] text-white animate-pulse"></div>
                                 </a>
                             </div>
                         </div>

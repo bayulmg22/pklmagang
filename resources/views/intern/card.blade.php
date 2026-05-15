@@ -21,20 +21,47 @@
                     </div>
                 @endif
 
-                <form action="{{ route('intern.card.photo') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <form id="photoForm" action="{{ route('intern.card.photo') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                     @csrf
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">Pilih File Foto (Maks 2MB)</label>
-                        <input type="file" name="photo" accept="image/*" 
-                            class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition cursor-pointer border border-slate-200 rounded-lg p-1 bg-slate-50" required>
+                    <div class="relative group">
+                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Pilih Foto Profil (Maks 2MB)</label>
+                        <div class="flex items-center gap-4">
+                            <label for="photoInput" class="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-2xl py-8 px-4 hover:border-blue-600 hover:bg-blue-50 transition-all cursor-pointer bg-slate-50">
+                                <span class="text-2xl mb-2">📸</span>
+                                <span class="text-xs font-black text-slate-600 uppercase tracking-widest">Klik untuk ganti foto</span>
+                                <input id="photoInput" type="file" name="photo" accept="image/*" class="hidden" onchange="previewAndSubmit(this)">
+                            </label>
+                        </div>
                         @error('photo')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="text-red-500 text-[10px] font-black mt-2 uppercase tracking-tight">{{ $message }}</p>
                         @enderror
                     </div>
-                    <button type="submit" class="px-6 py-2.5 bg-slate-900 text-white rounded-lg text-sm font-bold hover:bg-slate-800 transition shadow-sm">
-                        Simpan Perubahan Foto
-                    </button>
+                    <p class="text-[10px] font-bold text-slate-400 italic">Sistem akan menyimpan foto secara otomatis setelah Anda memilih file.</p>
                 </form>
+
+                <script>
+                    function previewAndSubmit(input) {
+                        if (input.files && input.files[0]) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                // Update preview immediately
+                                const preview = document.getElementById('cardPhotoPreview');
+                                if (preview) {
+                                    preview.src = e.target.result;
+                                    preview.classList.remove('hidden');
+                                    const placeholder = document.getElementById('cardPhotoPlaceholder');
+                                    if (placeholder) placeholder.classList.add('hidden');
+                                }
+                            }
+                            reader.readAsDataURL(input.files[0]);
+                            
+                            // Auto submit after short delay to show preview
+                            setTimeout(() => {
+                                document.getElementById('photoForm').submit();
+                            }, 500);
+                        }
+                    }
+                </script>
             </div>
 
             <div class="content-card p-8 bg-blue-600 text-white border-0 shadow-lg shadow-blue-200">
@@ -49,52 +76,54 @@
 
         <!-- Right Column: Card Preview -->
         <div class="lg:col-span-5 flex flex-col items-center">
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Preview Kartu Digital</p>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">Preview Kartu Digital</p>
             
             {{-- Professional ID Card Layout --}}
-            <div class="w-[280px] h-[440px] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden relative">
+            <div class="w-[300px] h-[480px] bg-white rounded-[2rem] shadow-2xl border border-slate-100 flex flex-col overflow-hidden relative">
                 <!-- Blue Header Banner -->
-                <div class="h-28 bg-blue-600 flex flex-col items-center justify-center text-center p-4">
-                    <img src="{{ asset('logo-dinsos.jpg') }}" class="h-10 w-auto bg-white rounded p-1 mb-2 shadow-sm" alt="Logo">
-                    <h5 class="text-white font-bold text-sm tracking-wide">DINAS SOSIAL</h5>
-                    <p class="text-blue-200 text-[9px] font-bold uppercase tracking-widest">Kabupaten Lamongan</p>
+                <div class="h-32 bg-slate-900 flex flex-col items-center justify-center text-center p-6">
+                    <div class="bg-white p-1.5 rounded-xl shadow-sm mb-3">
+                        <img src="{{ asset('logo-dinsos.jpg') }}" class="h-10 w-auto" alt="Logo">
+                    </div>
+                    <h5 class="text-white font-black text-base tracking-tight leading-none">DINAS SOSIAL</h5>
+                    <p class="text-sky-400 text-[10px] font-black uppercase tracking-[0.2em] mt-1.5">Kab. Lamongan</p>
                 </div>
 
                 <!-- Profile Section -->
-                <div class="flex-1 flex flex-col items-center px-4 pt-10 text-center bg-slate-50/30">
+                <div class="flex-1 flex flex-col items-center px-6 pt-12 text-center">
                     <!-- Photo Box -->
-                    <div class="w-28 h-36 bg-white border-4 border-white shadow-xl rounded-lg overflow-hidden -mt-20 z-10">
+                    <div class="w-32 h-40 bg-white border-[6px] border-white shadow-2xl rounded-2xl overflow-hidden -mt-24 z-10">
                         @if(auth()->user()->photo_path)
-                            <img src="{{ asset('storage/' . auth()->user()->photo_path) }}" class="w-full h-full object-cover">
+                            <img id="cardPhotoPreview" src="{{ asset('storage/' . auth()->user()->photo_path) }}?t={{ time() }}" class="w-full h-full object-cover">
                         @else
-                            <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
-                                👤
+                            <img id="cardPhotoPreview" class="w-full h-full object-cover hidden">
+                            <div id="cardPhotoPlaceholder" class="w-full h-full flex items-center justify-center bg-slate-50 text-slate-200">
+                                <span class="text-4xl">👤</span>
                             </div>
                         @endif
                     </div>
 
                     <!-- Name & ID -->
-                    <div class="mt-6">
-                        <h2 class="text-lg font-bold text-slate-800 leading-tight uppercase">{{ auth()->user()->name }}</h2>
-                        <p class="text-blue-600 font-bold text-sm mt-1 tracking-wider">{{ auth()->user()->nim }}</p>
-                        <div class="w-12 h-1 bg-blue-600 mx-auto my-3 rounded-full"></div>
-                        <p class="text-[10px] font-bold text-slate-500 uppercase">{{ auth()->user()->school }}</p>
-                        <p class="text-[9px] font-bold text-slate-400 mt-0.5 tracking-widest bg-slate-100 px-3 py-1 rounded-full inline-block">PESERTA MAGANG</p>
+                    <div class="mt-8 space-y-2">
+                        <h2 class="text-xl font-black text-slate-900 leading-tight uppercase tracking-tighter">{{ auth()->user()->name }}</h2>
+                        <p class="text-blue-600 font-black text-sm tracking-widest">{{ auth()->user()->nim }}</p>
+                        <div class="pt-4">
+                            <p class="text-[11px] font-black text-slate-400 uppercase tracking-[0.15em] mb-1">{{ auth()->user()->school }}</p>
+                            <span class="inline-block px-4 py-1.5 bg-blue-50 text-blue-600 text-[9px] font-black rounded-full uppercase tracking-widest border border-blue-100">Internship Member</span>
+                        </div>
                     </div>
 
                     <!-- QR Area -->
-                    <div class="mt-auto mb-8 flex flex-col items-center">
-                        <div class="p-1.5 bg-white border border-slate-100 shadow-sm rounded-lg">
-                            {!! \SimpleSoftwareIO\QrCode\Facades\QrCode::size(70)->generate(auth()->user()->id . '-' . auth()->user()->nim) !!}
+                    <div class="mt-auto mb-10">
+                        <div class="p-2 bg-white border border-slate-50 shadow-sm rounded-2xl inline-block">
+                            {!! \SimpleSoftwareIO\QrCode\Facades\QrCode::size(60)->generate(auth()->user()->id . '-' . auth()->user()->nim) !!}
                         </div>
-                        <p class="text-[8px] font-bold text-slate-300 mt-2 tracking-[0.2em] uppercase">SIMASOS ID PASS</p>
+                        <p class="text-[8px] font-black text-slate-300 mt-3 tracking-[0.3em] uppercase">Simasos Official Pass</p>
                     </div>
                 </div>
 
-                <!-- Card Footer Bar -->
-                <div class="h-6 bg-slate-900 flex items-center justify-center">
-                    <span class="text-[8px] font-bold text-slate-400 tracking-[0.3em] uppercase">Digital Identification System</span>
-                </div>
+                <!-- Footer Strip -->
+                <div class="h-2 bg-blue-600"></div>
             </div>
         </div>
     </div>

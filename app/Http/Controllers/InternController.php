@@ -44,7 +44,15 @@ class InternController extends Controller
         // Generate QR Code with user NIM
         $qrCode = base64_encode(QrCode::format('svg')->size(150)->generate($user->nim));
 
-        $pdf = Pdf::loadView('intern.card_pdf', compact('user', 'qrCode'));
+        // Encode photo to Base64 for PDF stability
+        $photoBase64 = null;
+        if ($user->photo_path && file_exists(public_path('storage/' . $user->photo_path))) {
+            $type = pathinfo(public_path('storage/' . $user->photo_path), PATHINFO_EXTENSION);
+            $data = file_get_contents(public_path('storage/' . $user->photo_path));
+            $photoBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        }
+
+        $pdf = Pdf::loadView('intern.card_pdf', compact('user', 'qrCode', 'photoBase64'));
         return $pdf->stream('ID_Card_Magang_' . $user->nim . '.pdf');
     }
 
