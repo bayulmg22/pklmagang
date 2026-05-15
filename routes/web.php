@@ -54,4 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+use App\Http\Controllers\AttendanceController;
+Route::get('/absensi/{user}', [AttendanceController::class, 'scan'])->name('attendance.scan');
+Route::post('/absensi/{user}', [AttendanceController::class, 'store'])->name('attendance.store');
+
 require __DIR__.'/auth.php';

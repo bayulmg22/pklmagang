@@ -19,7 +19,7 @@
             <div class="lg:col-span-4">
                 <div class="content-card p-6 sticky top-24">
                     <h3 class="font-bold text-slate-800 mb-2">Input Aktivitas</h3>
-                    <p class="text-xs text-slate-400 mb-6 uppercase tracking-widest font-bold">{{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+                    <p class="text-xs text-slate-400 mb-6 uppercase tracking-widest font-bold">{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</p>
                     
                     <form action="{{ route('intern.journals.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
                         @csrf
@@ -57,13 +57,13 @@
                             <div class="group flex gap-6 p-5 bg-white border border-slate-100 rounded-2xl hover:border-blue-100 hover:shadow-sm transition-all">
                                 <div class="flex-shrink-0">
                                     <div class="w-12 h-12 rounded-xl bg-slate-50 text-slate-400 border border-slate-100 flex flex-col items-center justify-center font-bold group-hover:bg-blue-50 group-hover:text-blue-600 group-hover:border-blue-100 transition-colors">
-                                        <span class="text-xs uppercase leading-none mb-1 text-[8px] tracking-widest">{{ \Carbon\Carbon::parse($journal->date)->translatedFormat('M') }}</span>
+                                        <span class="text-xs uppercase leading-none mb-1 text-[8px] tracking-widest">{{ \Carbon\Carbon::parse($journal->date)->locale('id')->translatedFormat('M') }}</span>
                                         <span class="text-lg leading-none">{{ \Carbon\Carbon::parse($journal->date)->format('d') }}</span>
                                     </div>
                                 </div>
                                 <div class="flex-grow min-w-0">
                                     <div class="flex justify-between items-start mb-2">
-                                        <h4 class="text-sm font-bold text-slate-800 uppercase tracking-tight">{{ \Carbon\Carbon::parse($journal->date)->translatedFormat('l, d F Y') }}</h4>
+                                        <h4 class="text-sm font-bold text-slate-800 uppercase tracking-tight">{{ \Carbon\Carbon::parse($journal->date)->locale('id')->translatedFormat('l, d F Y') }}</h4>
                                         <span class="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full">{{ $journal->created_at->format('H:i') }} WIB</span>
                                     </div>
                                     <p class="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">{{ $journal->activity }}</p>

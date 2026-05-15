@@ -41,8 +41,8 @@ class InternController extends Controller
             abort(403, 'Anda belum disetujui.');
         }
 
-        // Generate QR Code with user NIM
-        $qrCode = base64_encode(QrCode::format('svg')->size(150)->generate($user->nim));
+        // Generate QR Code linking to automated attendance scan page
+        $qrCode = base64_encode(QrCode::format('svg')->size(150)->generate(route('attendance.scan', $user)));
 
         // Encode photo to Base64 for PDF stability
         $photoBase64 = null;

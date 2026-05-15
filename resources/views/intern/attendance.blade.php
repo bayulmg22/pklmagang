@@ -20,7 +20,7 @@
         <div class="content-card p-8">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-800">{{ \Carbon\Carbon::now('Asia/Jakarta')->translatedFormat('l, d F Y') }}</h3>
+                    <h3 class="text-2xl font-bold text-slate-800">{{ \Carbon\Carbon::now('Asia/Jakarta')->locale('id')->translatedFormat('l, d F Y') }}</h3>
                     <p class="text-sm text-slate-500 font-medium">Waktu Sistem: <span class="text-blue-600 font-bold">{{ \Carbon\Carbon::now('Asia/Jakarta')->format('H:i') }} WIB</span></p>
                 </div>
                 <a href="{{ route('intern.attendance.print') }}" target="_blank"

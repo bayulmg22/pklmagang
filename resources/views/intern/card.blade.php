@@ -76,54 +76,48 @@
 
         <!-- Right Column: Card Preview -->
         <div class="lg:col-span-5 flex flex-col items-center">
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">Preview Kartu Digital</p>
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-8">Pratinjau Kartu Resmi</p>
             
-            {{-- Professional ID Card Layout --}}
-            <div class="w-[300px] h-[480px] bg-white rounded-[2rem] shadow-2xl border border-slate-100 flex flex-col overflow-hidden relative">
-                <!-- Blue Header Banner -->
-                <div class="h-32 bg-slate-900 flex flex-col items-center justify-center text-center p-6">
-                    <div class="bg-white p-1.5 rounded-xl shadow-sm mb-3">
-                        <img src="{{ asset('logo-dinsos.jpg') }}" class="h-10 w-auto" alt="Logo">
-                    </div>
-                    <h5 class="text-white font-black text-base tracking-tight leading-none">DINAS SOSIAL</h5>
-                    <p class="text-sky-400 text-[10px] font-black uppercase tracking-[0.2em] mt-1.5">Kab. Lamongan</p>
+            {{-- Professional ID Card Design (Mirroring PDF Layout) --}}
+            <div class="w-[300px] h-[450px] bg-white rounded-2xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden relative">
+                <!-- Header (Slate 900) - Matching PDF style -->
+                <div class="bg-[#0f172a] text-center py-5 border-b-[3px] border-blue-600 px-2">
+                    <img src="{{ asset('logo-dinsos.jpg') }}" class="h-10 w-auto mx-auto mb-2 bg-white p-0.5 rounded-sm" alt="Logo">
+                    <h5 class="text-white font-black text-sm tracking-tight leading-none">DINAS SOSIAL</h5>
+                    <p class="text-blue-400 text-[8px] font-black uppercase tracking-widest mt-1">Kabupaten Lamongan</p>
                 </div>
 
-                <!-- Profile Section -->
-                <div class="flex-1 flex flex-col items-center px-6 pt-12 text-center">
-                    <!-- Photo Box -->
-                    <div class="w-32 h-40 bg-white border-[6px] border-white shadow-2xl rounded-2xl overflow-hidden -mt-24 z-10">
+                <!-- Content Area -->
+                <div class="flex-1 flex flex-col items-center pt-5 px-4 text-center">
+                    <!-- Photo Frame -->
+                    <div class="w-[110px] h-[145px] bg-slate-50 border-[3px] border-slate-100 overflow-hidden relative shadow-sm">
                         @if(auth()->user()->photo_path)
                             <img id="cardPhotoPreview" src="{{ asset('storage/' . auth()->user()->photo_path) }}?t={{ time() }}" class="w-full h-full object-cover">
                         @else
                             <img id="cardPhotoPreview" class="w-full h-full object-cover hidden">
-                            <div id="cardPhotoPlaceholder" class="w-full h-full flex items-center justify-center bg-slate-50 text-slate-200">
-                                <span class="text-4xl">👤</span>
-                            </div>
+                            <div id="cardPhotoPlaceholder" class="w-full h-full flex items-center justify-center text-4xl text-slate-200">👤</div>
                         @endif
                     </div>
 
-                    <!-- Name & ID -->
-                    <div class="mt-8 space-y-2">
-                        <h2 class="text-xl font-black text-slate-900 leading-tight uppercase tracking-tighter">{{ auth()->user()->name }}</h2>
-                        <p class="text-blue-600 font-black text-sm tracking-widest">{{ auth()->user()->nim }}</p>
-                        <div class="pt-4">
-                            <p class="text-[11px] font-black text-slate-400 uppercase tracking-[0.15em] mb-1">{{ auth()->user()->school }}</p>
-                            <span class="inline-block px-4 py-1.5 bg-blue-50 text-blue-600 text-[9px] font-black rounded-full uppercase tracking-widest border border-blue-100">Internship Member</span>
-                        </div>
-                    </div>
-
-                    <!-- QR Area -->
-                    <div class="mt-auto mb-10">
-                        <div class="p-2 bg-white border border-slate-50 shadow-sm rounded-2xl inline-block">
-                            {!! \SimpleSoftwareIO\QrCode\Facades\QrCode::size(60)->generate(auth()->user()->id . '-' . auth()->user()->nim) !!}
-                        </div>
-                        <p class="text-[8px] font-black text-slate-300 mt-3 tracking-[0.3em] uppercase">Simasos Official Pass</p>
+                    <!-- User Info -->
+                    <div class="mt-2 space-y-0.5">
+                        <h2 class="text-base font-black text-slate-900 uppercase leading-tight">{{ auth()->user()->name }}</h2>
+                        <p class="text-blue-600 font-black text-xs">{{ auth()->user()->nim }}</p>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ auth()->user()->school }}</p>
                     </div>
                 </div>
 
+                <!-- QR Section (Absolute Bottom like PDF) -->
+                <div class="absolute bottom-5 w-full text-center">
+                    <div class="inline-block p-1.5 bg-white border border-slate-50 shadow-sm rounded-lg mb-1">
+                        {!! \SimpleSoftwareIO\QrCode\Facades\QrCode::size(65)->generate(route('attendance.scan', auth()->user())) !!}
+                    </div>
+                    <div class="text-[6px] font-black text-slate-400 uppercase tracking-widest">Dicetak: {{ now()->locale('id')->translatedFormat('d F Y') }}</div>
+                </div>
+
                 <!-- Footer Strip -->
-                <div class="h-2 bg-blue-600"></div>
+                <div class="absolute bottom-0 w-full h-2.5 bg-[#0f172a]"></div>
+            </div>
             </div>
         </div>
     </div>
