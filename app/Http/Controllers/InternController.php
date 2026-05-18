@@ -25,9 +25,17 @@ class InternController extends Controller
     public function updatePhoto(Request $request)
     {
         $request->validate(['photo' => 'required|image|max:2048']);
-        $path = $request->file('photo')->store('photos', 'public');
         
         $user = auth()->user();
+        
+        // Clean up: delete old photo file from disk if it exists
+        if ($user->photo_path && file_exists(public_path('storage/' . $user->photo_path))) {
+            @unlink(public_path('storage/' . $user->photo_path));
+        }
+
+        // Store new photo in a clean user-specific folder
+        $path = $request->file('photo')->store('photos/user_' . $user->id, 'public');
+        
         $user->photo_path = $path;
         $user->save();
 
@@ -42,7 +50,7 @@ class InternController extends Controller
         }
 
         // Generate QR Code linking to automated attendance scan page
-        $qrCode = base64_encode(QrCode::format('svg')->size(150)->generate('http://192.168.1.9:8000/absensi/' . $user->id));
+        $qrCode = base64_encode(QrCode::format('svg')->size(150)->generate(route('attendance.scan', $user)));
 
         // Encode photo to Base64 for PDF stability
         $photoBase64 = null;
@@ -66,7 +74,12 @@ class InternController extends Controller
         $today = Carbon::today()->toDateString();
         $attendance = Attendance::where('user_id', $user->id)->where('date', $today)->first();
 
-        return view('intern.attendance', compact('attendance'));
+        $history = Attendance::where('user_id', $user->id)
+            ->orderBy('date', 'desc')
+            ->take(10)
+            ->get();
+
+        return view('intern.attendance', compact('attendance', 'history'));
     }
 
     public function storeAttendance(Request $request)

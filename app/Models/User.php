@@ -23,6 +23,7 @@ class User extends Authenticatable
         'role',
         'nim',
         'school',
+        'major',
         'proposal_path',
         'photo_path',
         'status',
