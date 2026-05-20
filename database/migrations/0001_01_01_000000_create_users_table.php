@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('role', ['admin', 'intern'])->default('intern');
             $table->string('nim')->nullable()->unique();
             $table->string('school')->nullable();
+            $table->string('major')->nullable();
             $table->string('proposal_path')->nullable();
             $table->string('photo_path')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected', 'finished'])->default('pending');

@@ -9,7 +9,7 @@ class Evaluation extends Model
     protected $fillable = [
         'user_id', 'kedisiplinan', 'tanggung_jawab', 'kerja_sama', 
         'kreativitas', 'kemampuan_beradaptasi', 'kualitas_hasil_kerja', 
-        'penyusunan_laporan', 'average', 'predicate', 'comments'
+        'penyusunan_laporan', 'average', 'predicate', 'comments', 'finished_at'
     ];
 
     public function user()
