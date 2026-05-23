@@ -1,13 +1,4 @@
 <section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Profile Information') }}
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
-        </p>
-    </header>
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
@@ -26,7 +17,9 @@
                         @if($user->photo_path)
                             <img id="photo_preview" src="{{ asset('storage/' . $user->photo_path) }}?t={{ time() }}" alt="Foto" class="w-full h-full object-cover">
                         @else
-                            <div id="photo_placeholder" class="w-full h-full flex items-center justify-center text-4xl text-slate-300">👤</div>
+                            <div id="photo_placeholder" class="w-full h-full flex items-center justify-center text-4xl text-slate-300">
+                                <svg class="w-10 h-10 text-slate-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                            </div>
                             <img id="photo_preview" src="" alt="Foto" class="w-full h-full object-cover hidden">
                         @endif
                     </div>
@@ -61,15 +54,15 @@
             </script>
         </div>
 
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autocomplete="name" />
+        <div class="space-y-1">
+            <x-input-label for="name" :value="__('Nama Lengkap')" class="text-xs font-bold text-slate-500 uppercase tracking-wider" />
+            <x-text-input id="name" name="name" type="text" class="block w-full bg-slate-50 border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-slate-700" :value="old('name', $user->name)" required autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
+        <div class="space-y-1">
+            <x-input-label for="email" :value="__('Email')" class="text-xs font-bold text-slate-500 uppercase tracking-wider" />
+            <x-text-input id="email" name="email" type="email" class="block w-full bg-slate-50 border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-slate-700" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
@@ -91,8 +84,10 @@
             @endif
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+        <div class="flex items-center gap-4 pt-4">
+            <button type="submit" class="px-6 py-2.5 bg-blue-600 text-white font-bold rounded-xl text-xs uppercase tracking-wider hover:bg-blue-700 transition shadow-sm active:translate-y-0.5">
+                Simpan Perubahan
+            </button>
 
             @if (session('status') === 'profile-updated')
                 <p

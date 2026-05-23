@@ -108,4 +108,40 @@ class AdminController extends Controller
 
         return back()->with('success', 'Penilaian berhasil disimpan dan status peserta menjadi Selesai.');
     }
+
+    public function messages()
+    {
+        $interns = User::where('role', 'intern')->whereIn('status', ['approved', 'finished'])->get();
+        return view('admin.messages', compact('interns'));
+    }
+
+    public function storeMessage(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'message' => 'required|string',
+            'type' => 'required|in:announcement,message',
+            'user_id' => 'nullable|exists:users,id' // null means to all interns
+        ]);
+
+        $notification = new \App\Notifications\InternMessageNotification(
+            $request->title,
+            $request->message,
+            $request->type
+        );
+
+        if ($request->type === 'announcement' || !$request->user_id) {
+            // Send to all interns
+            $interns = User::where('role', 'intern')->whereIn('status', ['approved', 'finished'])->get();
+            \Illuminate\Support\Facades\Notification::send($interns, $notification);
+            $msgType = 'Pengumuman';
+        } else {
+            // Send to specific intern
+            $user = User::findOrFail($request->user_id);
+            $user->notify($notification);
+            $msgType = 'Pesan';
+        }
+
+        return back()->with('success', $msgType . ' berhasil dikirim!');
+    }
 }

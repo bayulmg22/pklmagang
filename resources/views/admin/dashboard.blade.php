@@ -44,7 +44,7 @@
                 </div>
                 <h3 class="text-4xl font-extrabold tracking-tight mt-4 leading-none">{{ $stats['total_interns'] }}</h3>
                 <div class="mt-4 flex items-center gap-1.5 bg-white/10 border border-white/10 rounded-full px-2.5 py-1 text-[9px] font-bold w-fit">
-                    <span>📈</span>
+                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
                     <span>Meningkat dari bulan lalu</span>
                 </div>
             </div>
@@ -57,7 +57,7 @@
                 </div>
                 <h3 class="text-4xl font-extrabold text-slate-800 tracking-tight mt-4 leading-none">{{ $stats['pending'] }}</h3>
                 <div class="mt-4 flex items-center gap-1.5 bg-amber-50 border border-amber-100/50 text-amber-700 rounded-full px-2.5 py-1 text-[9px] font-bold w-fit">
-                    <span>🕒</span>
+                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <span>Menanti verifikasi berkas</span>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                 </div>
                 <h3 class="text-4xl font-extrabold text-slate-800 tracking-tight mt-4 leading-none">{{ $stats['active'] }}</h3>
                 <div class="mt-4 flex items-center gap-1.5 bg-emerald-50 border border-emerald-100/50 text-emerald-700 rounded-full px-2.5 py-1 text-[9px] font-bold w-fit">
-                    <span>✓</span>
+                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <span>Sedang menjalani magang</span>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                 </div>
                 <h3 class="text-4xl font-extrabold text-slate-800 tracking-tight mt-4 leading-none">{{ $stats['alumni'] }}</h3>
                 <div class="mt-4 flex items-center gap-1.5 bg-indigo-50 border border-indigo-100/50 text-indigo-700 rounded-full px-2.5 py-1 text-[9px] font-bold w-fit">
-                    <span>🎓</span>
+                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" /></svg>
                     <span>Telah menyelesaikan program</span>
                 </div>
             </div>
@@ -155,13 +155,13 @@
                 <div class="space-y-4 my-6">
                     <h4 class="text-base font-extrabold text-slate-800 leading-snug">Rapat Pembekalan Evaluasi Bulanan Dinsos</h4>
                     <div class="flex items-center gap-2 text-[10px] text-slate-500 font-semibold bg-white border border-slate-200/60 rounded-lg p-2.5 shadow-sm">
-                        <span>⏰</span>
+                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         <span>09:00 WIB - 11:30 WIB</span>
                     </div>
                 </div>
 
                 <a href="#" class="w-full flex items-center justify-center gap-2 py-3 px-4 text-xs font-black text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition duration-200 shadow-md shadow-blue-500/10 active:scale-95 uppercase tracking-wider">
-                    <span>📹</span>
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" /></svg>
                     Gabung Rapat
                 </a>
             </div>
@@ -180,18 +180,22 @@
 
                 <div class="space-y-3 mt-5">
                     @php
+                        $svgFolder = '<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg>';
+                        $svgDoc = '<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>';
+                        $svgStar = '<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>';
+                        $svgCard = '<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>';
                         $todos = [
-                            ['Verifikasi Berkas Pendaftar', '24 Mei 2026', 'bg-blue-100 text-blue-600', '📁'],
-                            ['Review Jurnal Harian Peserta', '25 Mei 2026', 'bg-emerald-100 text-emerald-600', '📝'],
-                            ['Input Penilaian Kompetensi', '28 Mei 2026', 'bg-amber-100 text-amber-600', '⭐'],
-                            ['Cetak Kartu Tanda Pengenal', '30 Mei 2026', 'bg-indigo-100 text-indigo-600', '🪪']
+                            ['Verifikasi Berkas Pendaftar', '24 Mei 2026', 'bg-blue-100 text-blue-600', $svgFolder],
+                            ['Review Jurnal Harian Peserta', '25 Mei 2026', 'bg-emerald-100 text-emerald-600', $svgDoc],
+                            ['Input Penilaian Kompetensi', '28 Mei 2026', 'bg-amber-100 text-amber-600', $svgStar],
+                            ['Cetak Kartu Tanda Pengenal', '30 Mei 2026', 'bg-indigo-100 text-indigo-600', $svgCard]
                         ];
                     @endphp
                     @foreach($todos as $todo)
                     <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 last:border-0 last:pb-0">
                         <div class="flex items-center gap-2.5 min-w-0">
                             <span class="w-7 h-7 rounded-lg {{ $todo[2] }} flex items-center justify-center text-xs shrink-0 font-bold">
-                                {{ $todo[3] }}
+                                {!! $todo[3] !!}
                             </span>
                             <div class="min-w-0">
                                 <p class="text-xs font-bold text-slate-700 truncate">{{ $todo[0] }}</p>

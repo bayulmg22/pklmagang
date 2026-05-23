@@ -6,9 +6,9 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{ config('app.name', 'SIMASOS') }} — Dinsos Lamongan</title>
 
-        <!-- Fonts: Plus Jakarta Sans & Inter -->
+        <!-- Fonts: Inter -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800|inter:400,500,600,700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         <script src="https://cdn.tailwindcss.com"></script>
@@ -39,8 +39,8 @@
                 scroll-behavior: smooth;
             }
             h1, h2, h3, h4, h5, h6, .font-bold, .font-black, .font-extrabold {
-                font-family: 'Plus Jakarta Sans', sans-serif !important;
-                letter-spacing: -0.02em;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+                letter-spacing: -0.01em;
             }
             .bg-main { 
                 background: #f8fafc;
@@ -88,20 +88,6 @@
           x-init="$watch('sidebarMinimized', val => localStorage.setItem('sidebarMinimized', val))">
         @php
             $currentRoute = request()->route() ? request()->route()->getName() : '';
-            $iconMap = [
-                'admin.dashboard' => '📈',
-                'admin.interns' => '👥',
-                'admin.alumni' => '🎓',
-                'admin.attendances' => '📋',
-                'admin.journals' => '📝',
-                'admin.evaluations' => '⭐',
-                'intern.dashboard' => '🏠',
-                'intern.card' => '🪪',
-                'intern.attendance' => '📋',
-                'intern.journals' => '📝',
-                'intern.evaluation' => '⭐',
-            ];
-            $currentIcon = $iconMap[$currentRoute] ?? 'S';
         @endphp
 
         <div class="flex min-h-screen">
@@ -167,16 +153,32 @@
 
                         <!-- Right Side: Mail, Bell, and User Profile Side-by-Side -->
                         <div class="flex items-center gap-2 sm:gap-4 min-w-0">
-                            <!-- Mail Button -->
-                            <button class="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition duration-200">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
-                            </button>
+                            @auth
+                            @php
+                                $unreadMessagesCount = auth()->user()->unreadNotifications->filter(function ($n) {
+                                    return isset($n->data['type']) && $n->data['type'] === 'message';
+                                })->count();
+                                $unreadAnnouncementsCount = auth()->user()->unreadNotifications->filter(function ($n) {
+                                    return isset($n->data['type']) && $n->data['type'] === 'announcement';
+                                })->count();
+                            @endphp
 
-                            <!-- Bell Notification Button -->
-                            <button class="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition duration-200 relative">
+                            <!-- Mail Button (Messages) -->
+                            <a href="{{ auth()->user()->role === 'intern' ? route('intern.notifications', ['filter' => 'message']) : '#' }}" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition duration-200 relative">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+                                @if($unreadMessagesCount > 0)
+                                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-indigo-500 border border-white rounded-full animate-pulse"></span>
+                                @endif
+                            </a>
+
+                            <!-- Bell Button (Announcements) -->
+                            <a href="{{ auth()->user()->role === 'intern' ? route('intern.notifications', ['filter' => 'announcement']) : '#' }}" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition duration-200 relative">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" /></svg>
-                                <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-blue-600 border border-white rounded-full"></span>
-                            </button>
+                                @if($unreadAnnouncementsCount > 0)
+                                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-blue-500 border border-white rounded-full animate-pulse"></span>
+                                @endif
+                            </a>
+                            @endauth
 
                             <div class="h-8 w-px bg-slate-100 mx-1 hidden sm:block"></div>
 

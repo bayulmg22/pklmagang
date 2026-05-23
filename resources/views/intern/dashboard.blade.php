@@ -42,7 +42,9 @@
 
         @if(auth()->user()->status === 'pending')
             <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-3 text-amber-700 shadow-sm">
-                <span class="text-xl">⚠️</span>
+                <span class="text-amber-500">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                </span>
                 <div>
                     <p class="text-sm font-bold">Menunggu Persetujuan Admin</p>
                     <p class="text-xs mt-0.5">Pendaftaran Anda sedang ditinjau. Fitur jurnal dan absensi akan aktif setelah Anda disetujui.</p>
@@ -57,7 +59,9 @@
                 <div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
                 <div class="flex justify-between items-start relative z-10">
                     <span class="text-xs font-bold text-blue-100/90 tracking-wide uppercase">Profil Peserta</span>
-                    <span class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white text-xs border border-white/20 transition-transform group-hover:scale-110">👤</span>
+                    <span class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white text-xs border border-white/20 transition-transform group-hover:scale-110">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                    </span>
                 </div>
                 <h3 class="text-xl font-extrabold tracking-tight mt-4 leading-none truncate relative z-10">{{ auth()->user()->name }}</h3>
                 <p class="text-[10px] text-blue-200 font-bold mt-1 uppercase tracking-widest relative z-10">{{ auth()->user()->nim }}</p>
@@ -80,7 +84,9 @@
             <div class="bg-white border border-slate-200/60 rounded-2xl p-5 relative overflow-hidden shadow-sm hover:shadow-md transition duration-300 group hover:-translate-y-1">
                 <div class="flex justify-between items-start">
                     <span class="text-xs font-bold text-slate-400 tracking-wide uppercase">Total Kehadiran</span>
-                    <span class="w-7 h-7 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-xs transition-transform group-hover:scale-110">📋</span>
+                    <span class="w-7 h-7 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-xs transition-transform group-hover:scale-110">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
+                    </span>
                 </div>
                 <h3 class="text-4xl font-extrabold text-slate-800 tracking-tight mt-4 leading-none">{{ $attendanceCount }}</h3>
                 <div class="mt-4 flex items-center gap-1.5 bg-emerald-50 border border-emerald-100/50 text-emerald-700 rounded-full px-2.5 py-1 text-[9px] font-bold w-fit">
@@ -93,11 +99,13 @@
             <div class="bg-white border border-slate-200/60 rounded-2xl p-5 relative overflow-hidden shadow-sm hover:shadow-md transition duration-300 group hover:-translate-y-1">
                 <div class="flex justify-between items-start">
                     <span class="text-xs font-bold text-slate-400 tracking-wide uppercase">Jurnal Harian</span>
-                    <span class="w-7 h-7 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 text-xs transition-transform group-hover:scale-110">📝</span>
+                    <span class="w-7 h-7 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 text-xs transition-transform group-hover:scale-110">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+                    </span>
                 </div>
                 <h3 class="text-4xl font-extrabold text-slate-800 tracking-tight mt-4 leading-none">{{ $journalCount }}</h3>
                 <div class="mt-4 flex items-center gap-1.5 bg-indigo-50 border border-indigo-100/50 text-indigo-700 rounded-full px-2.5 py-1 text-[9px] font-bold w-fit">
-                    <span>📈</span>
+                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
                     <span>Laporan dikirim</span>
                 </div>
             </div>
@@ -106,11 +114,9 @@
             <div class="bg-white border border-slate-200/60 rounded-2xl p-5 relative overflow-hidden shadow-sm hover:shadow-md transition duration-300 group hover:-translate-y-1">
                 <div class="flex justify-between items-start">
                     <span class="text-xs font-bold text-slate-400 tracking-wide uppercase">Asal Instansi</span>
-                    <span class="w-7 h-7 rounded-full bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 text-xs transition-transform group-hover:scale-110">🏫</span>
-                </div>
-                <h3 class="text-sm font-bold text-slate-800 mt-4 leading-tight line-clamp-2 h-10">{{ auth()->user()->school }}</h3>
-                <div class="mt-2.5 flex items-center gap-1.5 bg-slate-50 border border-slate-100/50 text-slate-600 rounded-full px-2.5 py-1 text-[9px] font-bold w-fit">
-                    <span>🎓</span>
+                    <span class="w-7 h-7 rounded-full bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 text-xs transition-transform group-hover:scale-110">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>
+                    </span>
                     <span>Peserta Magang</span>
                 </div>
             </div>
@@ -132,7 +138,11 @@
                         @if($todayAttendance)
                             <div class="bg-white/10 border border-white/10 rounded-xl p-4 flex items-center gap-4 backdrop-blur-sm">
                                 <div class="w-10 h-10 rounded-full {{ $todayAttendance->status == 'hadir' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400' }} flex items-center justify-center text-lg shadow-inner">
-                                    {{ $todayAttendance->status == 'hadir' ? '✅' : 'ℹ️' }}
+                                    @if($todayAttendance->status == 'hadir')
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    @else
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+                                    @endif
                                 </div>
                                 <div>
                                     <p class="text-xs font-bold text-slate-300">Status Kehadiran</p>
@@ -155,7 +165,9 @@
                             @endif
                         @else
                             <div class="text-center py-6">
-                                <span class="text-4xl drop-shadow-md">⏱️</span>
+                                <div class="w-12 h-12 mx-auto text-slate-500 opacity-80 mb-4">
+                                    <svg class="w-full h-full" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                </div>
                                 <p class="text-sm font-bold text-slate-300 mt-4">Belum Absen Hari Ini</p>
                                 <p class="text-[10px] text-slate-500 mt-1">Jangan lupa scan QR code di kantor.</p>
                                 @if(auth()->user()->status === 'approved')
@@ -235,7 +247,7 @@
                                 @if($journal->photo_path)
                                     <img src="{{ asset('storage/' . $journal->photo_path) }}" class="w-full h-full object-cover">
                                 @else
-                                    📝
+                                    <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
                                 @endif
                             </div>
                             <div class="min-w-0 flex-1">
@@ -245,7 +257,9 @@
                         </div>
                     @empty
                         <div class="flex flex-col items-center justify-center h-full py-6 text-center">
-                            <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center text-slate-300 text-xl mb-3 shadow-sm">📋</div>
+                            <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center text-slate-300 text-xl mb-3 shadow-sm">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
+                            </div>
                             <p class="text-xs font-bold text-slate-500">Belum ada jurnal</p>
                             <p class="text-[10px] text-slate-400 mt-1 font-semibold">Anda belum menulis jurnal harian.</p>
                         </div>
