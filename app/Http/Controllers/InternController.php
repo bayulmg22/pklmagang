@@ -67,7 +67,7 @@ class InternController extends Controller
     public function attendance()
     {
         $user = auth()->user();
-        if ($user->status !== 'approved') {
+        if ($user->status !== 'approved' && $user->status !== 'finished') {
             return redirect()->route('intern.dashboard')->with('error', 'Akses ditolak.');
         }
 
@@ -85,6 +85,9 @@ class InternController extends Controller
     public function storeAttendance(Request $request)
     {
         $user = auth()->user();
+        if ($user->status !== 'approved') {
+            return back()->with('error', 'Akses ditolak.');
+        }
         $now = Carbon::now('Asia/Jakarta');
         $today = $now->toDateString();
         $time = $now->format('H:i:s');
@@ -173,8 +176,9 @@ class InternController extends Controller
     public function evaluation()
     {
         $user = auth()->user();
-        if ($user->status !== 'finished') {
-            return redirect()->route('intern.dashboard')->with('error', 'Penilaian belum tersedia.');
+        
+        if ($user->status !== 'approved' && $user->status !== 'finished') {
+            return redirect()->route('intern.dashboard')->with('error', 'Akses ditolak. Anda belum disetujui.');
         }
 
         $evaluation = \App\Models\Evaluation::where('user_id', $user->id)->first();
@@ -184,11 +188,11 @@ class InternController extends Controller
     public function printEvaluation()
     {
         $user = auth()->user();
-        if ($user->status !== 'finished') {
-            abort(403, 'Penilaian belum tersedia.');
-        }
-
         $evaluation = \App\Models\Evaluation::where('user_id', $user->id)->first();
+
+        if (!$evaluation) {
+            abort(403, 'Penilaian belum tersedia untuk dicetak.');
+        }
         
         $pdf = Pdf::loadView('intern.evaluation_pdf', compact('evaluation', 'user'));
         return $pdf->stream('Laporan_Nilai_Magang_' . $user->nim . '.pdf');
@@ -220,5 +224,27 @@ class InternController extends Controller
 
         $pdf = Pdf::loadView('intern.journals_pdf', compact('journals', 'user'));
         return $pdf->stream('Laporan_Jurnal_' . $user->nim . '.pdf');
+    }
+
+    public function notifications(Request $request)
+    {
+        $user = auth()->user();
+        
+        // Ensure only active/finished interns can access
+        if ($user->status !== 'approved' && $user->status !== 'finished') {
+            return redirect()->route('intern.dashboard')->with('error', 'Akses ditolak.');
+        }
+
+        $query = $user->notifications();
+        
+        if ($request->has('filter')) {
+            $type = $request->filter; // 'message' or 'announcement'
+            $query->where('data->type', $type);
+        }
+
+        $notifications = $query->paginate(15);
+        $filter = $request->filter;
+        
+        return view('intern.notifications', compact('notifications', 'filter'));
     }
 }

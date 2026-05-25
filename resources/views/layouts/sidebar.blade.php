@@ -35,7 +35,9 @@
                 'attendance' => '<svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>',
                 'journals' => '<svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 0a9.06 9.06 0 0 0-1.5.124M12 3.75a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1-.75-.75V4.5a.75.75 0 0 1 .75-.75h1.5Z" /></svg>',
                 'evaluation' => '<svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499c.172-.477.81-.477.982 0l1.83 5.093a.5.5 0 0 0 .475.345l5.241.246c.506.024.707.656.319.988l-3.93 3.356a.5.5 0 0 0-.159.49l1.169 5.174c.113.502-.42.89-.853.62l-4.568-2.848a.5.5 0 0 0-.528 0l-4.568 2.848c-.433.27-.966-.118-.853-.62l1.169-5.174a.5.5 0 0 0-.159-.49L3.52 10.17c-.388-.332-.187-.964.319-.988l5.241-.246a.5.5 0 0 0 .475-.345l1.83-5.093Z" /></svg>',
-                'card' => '<svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm-1.2 5.385a4.125 4.125 0 0 0-1.35-.135c-.482 0-.965.045-1.44.135m5.58 0a4.125 4.125 0 0 1-1.35-.135c-.482 0-.965.045-1.44.135m0 0a2.25 2.25 0 1 0 2.88 0Z" /></svg>'
+                'card' => '<svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm-1.2 5.385a4.125 4.125 0 0 0-1.35-.135c-.482 0-.965.045-1.44.135m5.58 0a4.125 4.125 0 0 1-1.35-.135c-.482 0-.965.045-1.44.135m0 0a2.25 2.25 0 1 0 2.88 0Z" /></svg>',
+                'messages' => '<svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" /></svg>',
+                'notifications' => '<svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" /></svg>'
             ];
             
             $adminMenus = [
@@ -48,6 +50,7 @@
                     ['admin.attendances', 'attendance', 'Presensi'],
                     ['admin.journals', 'journals', 'Jurnal'],
                     ['admin.evaluations', 'evaluation', 'Penilaian'],
+                    ['admin.messages', 'messages', 'Kirim Pesan'],
                 ]
             ];
             $internMenus = [
@@ -57,6 +60,7 @@
                     ['intern.attendance', 'attendance', 'Presensi'],
                     ['intern.journals', 'journals', 'Jurnal'],
                     ['intern.evaluation', 'evaluation', 'Penilaian'],
+                    ['intern.notifications', 'notifications', 'Pusat Notifikasi'],
                 ]
             ];
             
@@ -110,7 +114,9 @@
             <div class="absolute -left-4 -top-4 w-16 h-16 rounded-full bg-white/5 blur-lg pointer-events-none"></div>
             
             <div class="relative z-10 space-y-3">
-                <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center border border-white/20 text-sm shadow-sm">📘</div>
+                <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center border border-white/20 shadow-sm">
+                    <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                </div>
                 <div class="space-y-1">
                     <p class="text-xs font-bold leading-tight">Panduan Magang</p>
                     <p class="text-[9px] text-blue-100/80 leading-normal">Unduh pedoman resmi pelaksanaan magang Dinas Sosial.</p>

@@ -128,7 +128,9 @@
                         @empty
                             <tr id="emptyRow">
                                 <td colspan="4" class="px-6 py-16 text-center">
-                                    <div class="text-4xl mb-3">📝</div>
+                                    <div class="w-10 h-10 mx-auto mb-3 text-slate-300">
+                                        <svg class="w-full h-full text-current" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+                                    </div>
                                     <h4 class="font-extrabold text-slate-700 text-sm">Tidak Ada Jurnal Aktivitas</h4>
                                     <p class="text-slate-400 text-xs mt-1">Belum ada catatan aktivitas harian yang dikirimkan.</p>
                                 </td>

@@ -28,6 +28,20 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/journals', [AdminController::class, 'journals'])->name('journals');
     Route::get('/evaluations', [AdminController::class, 'evaluations'])->name('evaluations');
     Route::post('/evaluations/{user}', [AdminController::class, 'storeEvaluation'])->name('evaluations.store');
+    Route::get('/messages', [AdminController::class, 'messages'])->name('messages');
+    Route::post('/messages', [AdminController::class, 'storeMessage'])->name('messages.store');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/notifications/{id}/read', function($id) {
+        auth()->user()->unreadNotifications->where('id', $id)->markAsRead();
+        return back();
+    })->name('notifications.read');
+    
+    Route::post('/notifications/read-all', function() {
+        auth()->user()->unreadNotifications->markAsRead();
+        return back();
+    })->name('notifications.read-all');
 });
 
 use App\Http\Controllers\InternController;
@@ -46,6 +60,7 @@ Route::middleware(['auth', 'verified'])->prefix('intern')->name('intern.')->grou
     Route::get('/journals/print', [InternController::class, 'printJournals'])->name('journals.print');
     Route::get('/evaluation', [InternController::class, 'evaluation'])->name('evaluation');
     Route::get('/evaluation/print', [InternController::class, 'printEvaluation'])->name('evaluation.print');
+    Route::get('/notifications', [InternController::class, 'notifications'])->name('notifications');
 });
 
 Route::middleware('auth')->group(function () {

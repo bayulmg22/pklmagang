@@ -43,11 +43,11 @@
                     <div class="bg-slate-900 rounded-2xl p-6 text-white flex items-center justify-between shadow-xl">
                         <div>
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Skor Rata-rata</p>
-                            <p class="text-4xl font-black">{{ number_format($evaluation->average, 1) }}</p>
+                            <p class="text-4xl font-black">{{ $evaluation ? number_format($evaluation->average, 1) : '0.0' }}</p>
                         </div>
                         <div class="text-right">
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Predikat</p>
-                            <p class="text-3xl font-black text-blue-400">{{ $evaluation->predicate }}</p>
+                            <p class="text-3xl font-black {{ $evaluation ? 'text-blue-400' : 'text-slate-500' }}">{{ $evaluation ? $evaluation->predicate : 'Belum Dinilai' }}</p>
                         </div>
                     </div>
                 </div>
@@ -58,13 +58,13 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
                     @php
                         $items = [
-                            'Kedisiplinan' => $evaluation->kedisiplinan,
-                            'Tanggung Jawab' => $evaluation->tanggung_jawab,
-                            'Kerja Sama Tim' => $evaluation->kerja_sama,
-                            'Kreativitas' => $evaluation->kreativitas,
-                            'Adaptasi' => $evaluation->kemampuan_beradaptasi,
-                            'Kualitas Hasil Kerja' => $evaluation->kualitas_hasil_kerja,
-                            'Penyusunan Laporan' => $evaluation->penyusunan_laporan,
+                            'Kedisiplinan' => $evaluation->kedisiplinan ?? 0,
+                            'Tanggung Jawab' => $evaluation->tanggung_jawab ?? 0,
+                            'Kerja Sama Tim' => $evaluation->kerja_sama ?? 0,
+                            'Kreativitas' => $evaluation->kreativitas ?? 0,
+                            'Adaptasi' => $evaluation->kemampuan_beradaptasi ?? 0,
+                            'Kualitas Hasil Kerja' => $evaluation->kualitas_hasil_kerja ?? 0,
+                            'Penyusunan Laporan' => $evaluation->penyusunan_laporan ?? 0,
                         ];
                     @endphp
                     @foreach($items as $label => $val)
@@ -81,16 +81,27 @@
                 </div>
             </div>
 
-            <div class="mb-10 p-6 bg-blue-50 border-l-4 border-blue-600 rounded-r-2xl italic">
-                <h4 class="text-[10px] font-black text-blue-800 uppercase tracking-widest mb-2">Pesan Pembimbing</h4>
-                <p class="text-sm text-blue-700 leading-relaxed font-medium">"{{ $evaluation->comments }}"</p>
+            <div class="mb-10 p-6 {{ $evaluation ? 'bg-blue-50 border-blue-600' : 'bg-slate-50 border-slate-300' }} border-l-4 rounded-r-2xl italic">
+                <h4 class="text-[10px] font-black {{ $evaluation ? 'text-blue-800' : 'text-slate-500' }} uppercase tracking-widest mb-2">Pesan Pembimbing</h4>
+                <p class="text-sm {{ $evaluation ? 'text-blue-700' : 'text-slate-400' }} leading-relaxed font-medium">
+                    "{{ $evaluation->comments ?? 'Belum ada catatan dari pembimbing.' }}"
+                </p>
             </div>
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 border-t border-slate-100 pt-8">
-                <a href="{{ route('intern.evaluation.print') }}" target="_blank" 
-                   class="w-full sm:w-auto px-10 py-4 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition shadow-lg active:translate-y-0.5 text-center">
-                    📥 DOWNLOAD SERTIFIKAT NILAI (PDF)
-                </a>
+                @if($evaluation)
+                    <a href="{{ route('intern.evaluation.print') }}" target="_blank" 
+                       class="w-full sm:w-auto px-10 py-4 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition shadow-lg active:translate-y-0.5 text-center flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                        DOWNLOAD SERTIFIKAT NILAI (PDF)
+                    </a>
+                @else
+                    <button disabled class="w-full sm:w-auto px-10 py-4 bg-slate-200 text-slate-400 rounded-xl font-bold text-sm cursor-not-allowed text-center flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                        DOWNLOAD SERTIFIKAT NILAI (PDF)
+                    </button>
+                    <p class="text-xs text-slate-500 mt-2 sm:mt-0 sm:ml-4">Sertifikat tersedia setelah penilaian diberikan.</p>
+                @endif
             </div>
         </div>
     </div>
